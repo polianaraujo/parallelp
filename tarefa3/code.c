@@ -4,9 +4,9 @@ Implemente um programa em C que calcule uma aproximação de ∏ usando uma sér
 
 #include <stdio.h>
 #include <math.h>
-#include <time.h>
+#include <sys/time.h>
 
-// Função para calcular pi pela série de Leibniz
+// Função para calcular pi usando a série de Leibniz
 double calcular_pi(long long int iteracoes) {
     double pi = 0.0;
     for (long long int k = 0; k < iteracoes; k++) {
@@ -16,8 +16,12 @@ double calcular_pi(long long int iteracoes) {
     return 4.0 * pi;
 }
 
+// Função para calcular tempo decorrido em segundos
+double tempo_decorrido(struct timeval inicio, struct timeval fim) {
+    return (fim.tv_sec - inicio.tv_sec) + (fim.tv_usec - inicio.tv_usec) / 1e6;
+}
+
 int main() {
-    // Vetor com diferentes quantidades de iterações
     long long int passos[] = {1000, 10000, 100000, 1000000, 10000000};
     int tamanho = sizeof(passos) / sizeof(passos[0]);
     double pi_real = M_PI;
@@ -27,14 +31,16 @@ int main() {
     printf("--------------------------------------------------------------------------\n");
 
     for (int i = 0; i < tamanho; i++) {
-        clock_t inicio = clock();  // Tempo inicial
+        struct timeval inicio, fim;
+
+        gettimeofday(&inicio, NULL);  // Captura o tempo antes do cálculo
         double pi_aprox = calcular_pi(passos[i]);
-        clock_t fim = clock();     // Tempo final
-        double tempo_exec = (double)(fim - inicio) / CLOCKS_PER_SEC;
+        gettimeofday(&fim, NULL);  // Captura o tempo depois do cálculo
 
-        double erro = fabs(pi_real - pi_aprox);  // Erro absoluto entre os dois valores.
+        double tempo_exec = tempo_decorrido(inicio, fim);
+        double erro = fabs(pi_real - pi_aprox);
 
-        printf("%lld\t\t%.15f\t%.15f\t%.5f\n", passos[i], pi_aprox, erro, tempo_exec);
+        printf("%lld\t\t%.15f\t%.15f\t%.6f\n", passos[i], pi_aprox, erro, tempo_exec);
     }
 
     return 0;
