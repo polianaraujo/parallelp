@@ -1,60 +1,62 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <omp.h>
+#include <math.h>
 
-// Função para checar se um número é primo
+// Função que verifica se um número é primo
 int eh_primo(int num) {
     if (num < 2) return 0;
-    for (int i = 2; i*i <= num; i++) {
-        if (num % i == 0) return 0;
+    for (int i = 2; i <= sqrt(num); i++) {
+        if (num % i == 0)
+            return 0;
     }
     return 1;
 }
 
 int main() {
-    int n;
-    printf("Digite o valor máximo (n): ");
+    int n, i, total_primos_seq = 0, total_primos_paralelo = 0;
+
+    printf("Digite o valor de n: ");
     scanf("%d", &n);
 
-    int count_seq = 0;
-    int count_paralelo = 0;
+    double start, end;
 
-    double start_seq, end_seq;
-    double start_par, end_par;
-
-    // Versão sequencial
-    start_seq = omp_get_wtime();
-    for (int i = 2; i <= n; i++) {
+    // ================= SEQUENCIAL =================
+    start = omp_get_wtime();
+    for (i = 2; i <= n; i++) {
         if (eh_primo(i)) {
-            count_seq++;
+            total_primos_seq++;
         }
     }
-    end_seq = omp_get_wtime();
+    end = omp_get_wtime();
+    printf("\n[Sequencial] Total de primos entre 2 e %d: %d\n", n, total_primos_seq);
+    printf("[Sequencial] Tempo: %f segundos\n", end - start);
 
-    printf("\nSequencial:\n");
-    printf("Total de primos entre 2 e %d: %d\n", n, count_seq);
-    printf("Tempo sequencial: %.6f segundos\n", end_seq - start_seq);
+    // ================= PARALELO =================
+    // ================= PARALELO =================
+    start = omp_get_wtime();
+    int nthreads = 0;
 
-    // Versão paralela
-    start_par = omp_get_wtime();
-    #pragma omp parallel for reduction(+:count_paralelo)
-    for (int i = 2; i <= n; i++) {
-        if (eh_primo(i)) {
-            count_paralelo++;
+    #pragma omp parallel
+    {
+        #pragma omp single
+        {
+            nthreads = omp_get_num_threads();
+        }
+
+        #pragma omp for reduction(+:total_primos_paralelo)
+        for (i = 2; i <= n; i++) {
+            if (eh_primo(i)) {
+                total_primos_paralelo++;
+            }
         }
     }
-    end_par = omp_get_wtime();
+    end = omp_get_wtime();
 
-    printf("\nParalelo:\n");
-    printf("Total de primos entre 2 e %d: %d\n", n, count_paralelo);
-    printf("Tempo paralelo: %.6f segundos\n", end_par - start_par);
+    printf("\n[Paralelo] Total de primos entre 2 e %d: %d\n", n, total_primos_paralelo);
+    printf("[Paralelo] Tempo: %f segundos\n", end - start);
+    printf("[Paralelo] Threads: %d\n", nthreads);  // <-- Adiciona esta linha
 
-    // Verificando se o resultado bate
-    if (count_seq == count_paralelo) {
-        printf("\n✅ Resultados coincidem.\n");
-    } else {
-        printf("\n❌ Resultados diferentes!\n");
-    }
 
     return 0;
 }
