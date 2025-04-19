@@ -33,7 +33,6 @@ int main() {
     printf("[Sequencial] Tempo: %f segundos\n", end - start);
 
     // ================= PARALELO =================
-    // ================= PARALELO =================
     start = omp_get_wtime();
     int nthreads = 0;
 
