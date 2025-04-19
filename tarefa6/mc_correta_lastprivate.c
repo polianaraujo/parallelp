@@ -3,23 +3,30 @@
 #include <omp.h>
 
 int main() {
-    int N = 100000000;
+    const int N = 100000000;
     int dentro_do_circulo = 0;
     double x, y;
     double start, end;
 
     start = omp_get_wtime();
 
-    #pragma omp parallel shared(N) private(x, y)
+    #pragma omp parallel private(x, y)
     {
-        #pragma omp for lastprivate(dentro_do_circulo)
+        int local_dentro = 0;  // Variável local para cada thread
+        unsigned int seed = omp_get_thread_num();  // Seed única para rand_r
+
+        #pragma omp for nowait
         for (int i = 0; i < N; i++) {
-            x = (double)rand() / RAND_MAX;
-            y = (double)rand() / RAND_MAX;
+            x = (double)rand_r(&seed) / RAND_MAX;
+            y = (double)rand_r(&seed) / RAND_MAX;
 
             if (x * x + y * y <= 1.0)
-                dentro_do_circulo++;
+                local_dentro++;
         }
+
+        // Combinação segura dos resultados
+        #pragma omp atomic
+        dentro_do_circulo += local_dentro;
     }
 
     double pi = 4.0 * dentro_do_circulo / N;

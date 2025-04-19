@@ -1,8 +1,8 @@
 Versao,Pi,Tempo(s)
-Serial,3.141548,3.418863
-Paralela Incoreta,0.238670,1.328038
-Paralela Corret-default,3.141657,0.164513
-Paralela Corret-private,3.141657,0.181069
-Paralela Corret-shared,3.141657,0.180264
-Paralela Corret-firstprivate,3.141657,0.167264
-Paralela Corret-lastprivate,0.597358,22.540457
+Serial,3.141424,3.449501
+Paralela Incoreta,0.329666,2.518219
+Paralela Corret-default,3.141735,0.184691
+Paralela Corret-private,3.141735,0.167362
+Paralela Corret-shared,3.141657,0.183784
+Paralela Corret-firstprivate,3.141657,0.179402
+Paralela Corret-lastprivate,3.141726,0.178766
