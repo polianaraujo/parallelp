@@ -1,36 +1,32 @@
 #!/bin/bash
 
-# Nome do arquivo CSV de saída
-output_file="resultados_pi.csv"
+# Criar o arquivo CSV e adicionar o cabeçalho
+echo "Versao,Pi,Tempo(s)" > resultados.csv
 
-# Cabeçalho do CSV
-echo "Metodo,Estimativa_PI" > $output_file
+# Compilar e rodar a versão Serial
+gcc -fopenmp -o serial mc_serial.c
+serial_output=$(./serial)
+pi_serial=$(echo "$serial_output" | grep "Estimativa" | awk '{print $4}')
+tempo_serial=$(echo "$serial_output" | grep "Tempo" | awk '{print $2}')
+echo "Serial,$pi_serial,$tempo_serial" >> resultados.csv
 
-# Função para compilar e executar um programa
-run_program() {
-    local source_file=$1
-    local method_name=$2
-    local output
-    
-    # Compila o programa
-    gcc -o temp_program $source_file -fopenmp
-    
-    # Executa e captura a saída
-    output=$(./temp_program)
-    
-    # Extrai o valor de PI da saída
-    pi_value=$(echo "$output" | grep -oE "[0-9]+\.[0-9]+")
-    
-    # Adiciona ao CSV
-    echo "$method_name,$pi_value" >> $output_file
-    
-    # Remove o programa temporário
-    rm -f temp_program
-}
+# Compilar e rodar a versão Paralela Incorreta
+gcc -fopenmp -o incorreta mc_incorreta.c
+incorreta_output=$(./incorreta)
+pi_incorreta=$(echo "$incorreta_output" | grep "Estimativa" | awk '{print $4}')
+tempo_incorreta=$(echo "$incorreta_output" | grep "Tempo" | awk '{print $2}')
+echo "Paralela Incoreta,$pi_incorreta,$tempo_incorreta" >> resultados.csv
 
-# Executa os três programas
-run_program "pi_serial.c" "Serial"
-run_program "pi_incorreta.c" "Paralelo_Incorreto"
-run_program "pi_correta.c" "Paralelo_Correto"
+# Lista de versões corretas com diferentes cláusulas
+VERSOES=("default" "private" "shared" "firstprivate" "lastprivate")
 
-echo "Resultados salvos em $output_file"
+# Compilar e rodar cada uma
+for versao in "${VERSOES[@]}"; do
+    gcc -fopenmp -o correta_$versao mc_correta_$versao.c
+    saida=$(./correta_$versao)
+    pi=$(echo "$saida" | grep "Estimativa" | awk '{print $4}')
+    tempo=$(echo "$saida" | grep "Tempo" | awk '{print $2}')
+    echo "Paralela Corret-$versao,$pi,$tempo" >> resultados.csv
+done
+
+echo "Resultados salvos em resultados.csv"
