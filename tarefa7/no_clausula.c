@@ -5,73 +5,60 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <omp.h>
+#include <string.h>
 
-// Definição do nó da lista
-// Assim, é possível fazer uma lista encadeada onde cada nó aponta para o próximo
-typedef struct Node {
-    char filename[100]; // guardar o nome do arquivo (string)
-    struct Node* next;  // um ponteiro para o próximo nó da lista
+typedef struct node {
+    char filename[100];
+    struct node* next;
 } Node;
 
-// Função para criar um novo nó
-// - Aloca memória para um novo nó (malloc)
-// - Copia o nome do arquivo para 'filename'
-// - Deixa 'next' como NULL (porque inicialmente ele não aponta para nada)
-// - Retorna o ponteiro para o novo nó
-Node* create_node(const char* name) {
-    Node* new_node = (Node*) malloc(sizeof(Node));
-    snprintf(new_node->filename, 100, "%s", name);
+void append(Node** head_ref, const char* filename) {
+    Node* new_node = (Node*)malloc(sizeof(Node));
+    strcpy(new_node->filename, filename);
     new_node->next = NULL;
-    return new_node;
+
+    if (*head_ref == NULL) {
+        *head_ref = new_node;
+        return;
+    }
+
+    Node* temp = *head_ref;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = new_node;
 }
 
-// Função para liberar a lista
-// - Percorre a lista
-// - Guarda o ponteiro atual em 'temp'
-// - Move 'head' para o próximo nó
-// - Libera a memória (free(temp))
-// Assim a gente evita vazamento de memória no final do programa
 void free_list(Node* head) {
-    Node* temp;
     while (head != NULL) {
-        temp = head;
+        Node* temp = head;
         head = head->next;
         free(temp);
     }
 }
 
 int main() {
-    // Criando a lista encadeada
-    Node* head = create_node("arquivo1.txt");       // head : aponta para o primeiro nó
-    head->next = create_node("arquivo2.txt");       // head : aponto para o segundo nó
-    head->next->next = create_node("arquivo3.txt"); // head : aponto para o terceiro nó...
-    head->next->next->next = create_node("arquivo4.txt");
-    head->next->next->next->next = create_node("arquivo5.txt");
+    Node* head = NULL;
 
-    Node* current;
+    append(&head, "arquivo1.txt");
+    append(&head, "arquivo2.txt");
+    append(&head, "arquivo3.txt");
+    append(&head, "arquivo4.txt");
+    append(&head, "arquivo5.txt");
 
-    // Região paralela SEM cláusulas
-    #pragma omp parallel    // Cria várias threads
-    {
-        // Cada thread pega seu 'thread_id' com 'omp_get_thread_num()'
-        int thread_id = omp_get_thread_num();
-        current = head;
+    Node* current = head;
 
-        // Todas as threads percorrem a lista inteira e imprimem o nome do arquivo com o id da thread
-
-        while (current != NULL) {
-            printf("Arquivo: %s | Thread: %d\n", current->filename, thread_id);
-            current = current->next;
-        }
+    // Versão sequencial
+    while (current != NULL) {
+        printf("Arquivo: %s\n", current->filename);
+        current = current->next;
     }
 
-    // Liberando memória (lliberando a lista)
-    //Liberamos a memória alocada para lista encadeada
     free_list(head);
 
     return 0;
 }
+
 
 // Como não tem nenhuma cláusuça (single, for, task ...), todas as threads fazem o mesmo: cada uma percorre a lista inteira e imprime todos os arquivos.
 

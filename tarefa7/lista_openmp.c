@@ -1,39 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <omp.h>
 
-// Estrutura de nó
-typedef struct Node {
+typedef struct node {
     char filename[100];
-    struct Node* next;
+    struct node* next;
 } Node;
 
-// Função para criar um novo nó
-Node* createNode(const char* filename) {
-    Node* newNode = (Node*) malloc(sizeof(Node));
-    snprintf(newNode->filename, sizeof(newNode->filename), "%s", filename);
-    newNode->next = NULL;
-    return newNode;
-}
+// Função para adicionar um novo nó ao final da lista
+void append(Node** head_ref, const char* filename) {
+    Node* new_node = (Node*)malloc(sizeof(Node));
+    strcpy(new_node->filename, filename);
+    new_node->next = NULL;
 
-// Função para adicionar nó no final
-void appendNode(Node** head, const char* filename) {
-    Node* newNode = createNode(filename);
-    if (*head == NULL) {
-        *head = newNode;
+    if (*head_ref == NULL) {
+        *head_ref = new_node;
         return;
     }
-    Node* current = *head;
-    while (current->next != NULL)
-        current = current->next;
-    current->next = newNode;
+
+    Node* temp = *head_ref;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = new_node;
 }
 
-// Função para liberar memória
-void freeList(Node* head) {
-    Node* temp;
+// Função para liberar a memória da lista
+void free_list(Node* head) {
     while (head != NULL) {
-        temp = head;
+        Node* temp = head;
         head = head->next;
         free(temp);
     }
@@ -43,32 +39,35 @@ int main() {
     Node* head = NULL;
 
     // Criando lista com arquivos fictícios
-    appendNode(&head, "arquivo1.txt");
-    appendNode(&head, "arquivo2.txt");
-    appendNode(&head, "arquivo3.txt");
-    appendNode(&head, "arquivo4.txt");
+    append(&head, "arquivo1.txt");
+    append(&head, "arquivo2.txt");
+    append(&head, "arquivo3.txt");
+    append(&head, "arquivo4.txt");
+    append(&head, "arquivo5.txt");
 
-    // Região paralela com tasks
+    Node* current = head;
+
     #pragma omp parallel
     {
-        #pragma omp single // apenas uma thread cria as tasks
+        #pragma omp single
         {
-            Node* current = head;
             while (current != NULL) {
-                Node* taskNode = current;
-                #pragma omp task
-                {
-                    int thread_id = omp_get_thread_num();
-                    printf("Arquivo: %s | Thread: %d\n", taskNode->filename, thread_id);
-                }
+                Node* temp = current;
                 current = current->next;
+
+                #pragma omp task firstprivate(temp)
+                {
+                    printf("Arquivo: %s, Thread: %d\n", temp->filename, omp_get_thread_num());
+                }
             }
         }
     }
 
-    freeList(head);
+    free_list(head);
+
     return 0;
 }
+
 
 // Esse código, como está, processa cada nó uma única vez e não repete.
 // ✔️ O comportamento muda entre execuções pela natureza dinâmica de agendamento de tarefas do OpenMP.
