@@ -2,14 +2,14 @@
 
 # Ativando mensagens de compilação
 echo "Compilando versão com atomic..."
-gcc -fopenmp code1.c -o code1 -O2
+gcc -fopenmp pi_atomic.c -o pi_atomic -O2
 
 echo "Compilando versão com reduction..."
-gcc -fopenmp code2.c -o code2 -O2
+gcc -fopenmp pi_reduction.c -o pi_reduction -O2
 
 # Executando os programas
 echo -e "\n--- Executando pi_atomic ---"
-./code1
+./pi_atomic
 
 echo -e "\n--- Executando pi_reduction ---"
-./code2
+./pi_reduction
