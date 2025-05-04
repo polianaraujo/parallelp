@@ -1,0 +1,5 @@
+Versão,Tempo (s)
+1A: rand() + critical,24.657376
+2A: rand() + vetor,25.474593
+1B: rand_r() + critical,0.116010
+2B: rand_r() + vetor padded,0.159250
