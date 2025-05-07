@@ -42,7 +42,8 @@ int main() {
         {512, 1024}, 
         {1024, 2048}, 
         {2048, 4096},
-        {4096, 8192}
+        {4096, 8192},
+        {8192, 16384}
     };
     int num_sizes = sizeof(sizes) / sizeof(sizes[0]); // Quantidade de tamanhos a testar
 
