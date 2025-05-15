@@ -15,6 +15,7 @@ void initialize_field(float field[NX][NY]) {
             field[i][j] = 0.0f;
         }
     }
+    
     field[NX / 2][NY / 2] = 1.0f; // Perturbação inicial no centro
 }
 
