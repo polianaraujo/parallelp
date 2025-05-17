@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=POLIANA-FRACA-OMP
 #SBATCH --time=0-0:20
-#SBATCH --partition=intel-512
+#SBATCH --partition=intel-128
 #SBATCH --output=slurm-weak-scalability-%j.out
 
 echo "Inicializando JOB: Escalabilidade Fraca"

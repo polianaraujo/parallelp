@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=POLIANA-FORTE-OMP
 #SBATCH --time=0-0:20
-#SBATCH --partition=intel-512
+#SBATCH --partition=intel-128
 #SBATCH --output=slurm-strong-scalability-%j.out
 
 echo "Inicializando JOB: Escalabilidade Forte"
