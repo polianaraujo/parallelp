@@ -24,7 +24,7 @@ do
   fi
 
   echo "Executando com $OMP_NUM_THREADS threads e N=$N"
-  ./escalabilidade_fraca $N
+  /home/pedarajo/repos/parallelp/tarefa12/npad/escalabilidade_fraca $N
 done
 
 echo "Finalizando JOB: Escalabilidade Fraca"
