@@ -7,7 +7,7 @@
 echo "Inicializando JOB: Escalabilidade Forte"
 
 # Compilação
-gcc -fopenmp escalabilidade_forte.c -o escalabilidade_forte
+gcc -fopenmp ns_esc_forte.c -o escalabilidade_forte
 
 # Execuções variando threads
 for threads in 1 2 4 8 16 24

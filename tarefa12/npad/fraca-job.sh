@@ -7,7 +7,7 @@
 echo "Inicializando JOB: Escalabilidade Fraca"
 
 # Compilação
-gcc -fopenmp escalabilidade_fraca.c -o escalabilidade_fraca
+gcc -fopenmp ns_esc_fraca.c -o escalabilidade_fraca
 
 baseN=32  # base N para 1 thread
 
