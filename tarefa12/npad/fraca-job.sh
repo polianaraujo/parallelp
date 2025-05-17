@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=POLIANA-WEAK-OMP
+#SBATCH --job-name=POLIANA-FRACA-OMP
 #SBATCH --time=0-0:20
 #SBATCH --partition=intel-512
 #SBATCH --output=slurm-weak-scalability-%j.out
@@ -7,7 +7,7 @@
 echo "Inicializando JOB: Escalabilidade Fraca"
 
 # Compilação
-gcc -fopenmp escalabilidade_fraca.c -o weak-scalability-assessment
+gcc -fopenmp escalabilidade_fraca.c -o escalabilidade_fraca
 
 baseN=32  # base N para 1 thread
 
@@ -24,7 +24,7 @@ do
   fi
 
   echo "Executando com $OMP_NUM_THREADS threads e N=$N"
-  ./weak-scalability-assessment $N
+  ./escalabilidade_fraca $N
 done
 
 echo "Finalizando JOB: Escalabilidade Fraca"
