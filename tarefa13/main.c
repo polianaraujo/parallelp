@@ -1,6 +1,3 @@
-// Utilizando estabilidade forte
-// Tamanho permanece fixo enquanto varia o número de threads, para observar como o desempenho escala
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -68,3 +65,45 @@ void run_simulation_forte(int num_threads, int nx, int ny, const char *schedule_
     for (int i = 0; i < nx; i++)
         for (int j = 0; j < ny; j++)
             sum += field[i][j];
+    float avg_value = sum / (nx * ny);
+
+    FILE *file = fopen("results_escalabilidade_forte.csv", "a");
+    if (file) {
+        fprintf(file, "%d,%d,%d,%s,%d,%.5f,%.5f,%.5f\n",
+                num_threads, nx, ny, schedule_type, chunk_size,
+                exec_time, center_value, avg_value);
+        fclose(file);
+    }
+
+    for (int i = 0; i < nx; i++) {
+        free(field[i]);
+        free(next_field[i]);
+    }
+    free(field);
+    free(next_field);
+}
+
+int main() {
+    FILE *file = fopen("results_escalabilidade_forte.csv", "w");
+    fprintf(file, "Threads,NX,NY,Schedule,ChunkSize,Time,CenterValue,AverageValue\n");
+    fclose(file);
+
+    int threads[] = {1, 2, 4, 8, 16};
+    const char *schedules[] = {"static"}; // pode adicionar "dynamic", "guided"
+    int chunk_sizes[] = {4};              // pode adicionar mais tamanhos
+
+    int nx = 500;  // Fixos para escalabilidade forte
+    int ny = 500;
+
+    for (int t = 0; t < 5; t++) {
+        int num_threads = threads[t];
+
+        for (int s = 0; s < 1; s++) {
+            for (int c = 0; c < 1; c++) {
+                run_simulation_forte(num_threads, nx, ny, schedules[s], chunk_sizes[c]);
+            }
+        }
+    }
+
+    return 0;
+}
