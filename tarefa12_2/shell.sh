@@ -4,27 +4,23 @@
 #SBATCH --time=0-0:20
 #SBATCH --partition=intel-128
 
-# Compila o código, se necessário
-make clean && make
+# Compilar o código
+echo "[INFO] Compilando main_forte.c..."
+gcc -O3 -fopenmp main_forte.c -o main_forte
 
-# Define arquivo de saída
-CSV="resultados_navier_stokes.csv"
-echo "tipo_execucao,n_threads,schedule,collapse,N,tempo" > $CSV
+# Criar arquivo de saída
+CSV="resultados_forte.csv"
+echo "n_threads,schedule,collapse,N,tempo" > $CSV
 
-# Testes de escalabilidade FORTE: problema fixo (N = 128³)
+# Parâmetro do problema (fixo para escalabilidade forte)
+N=128
+
+# Testar escalabilidade forte com diferentes parâmetros
 for threads in 1 2 4 8 16 32 64 128; do
     for collapse in 1 2 3; do
-        for sched in static dynamic guided; do
-            ./simulador forte $sched $collapse $threads >> $CSV
-        done
-    done
-done
-
-# Testes de escalabilidade FRACA: problema cresce com threads
-for threads in 1 2 4 8 16 32 64 128; do
-    for collapse in 1 2 3; do
-        for sched in static dynamic guided; do
-            ./simulador fraca $sched $collapse $threads >> $CSV
+        for schedule in static dynamic guided; do
+            echo "[INFO] Executando com $threads threads | schedule=$schedule | collapse=$collapse"
+            OMP_NUM_THREADS=$threads ./main_forte $schedule $collapse $N >> $CSV
         done
     done
 done
