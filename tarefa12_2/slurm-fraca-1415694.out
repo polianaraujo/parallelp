@@ -1,0 +1,5 @@
+[INFO] Compilando main_fraco.c...
+gcc: error: main_fraco.c: No such file or directory
+gcc: fatal error: no input files
+compilation terminated.
+[ERRO] Falha na compilação

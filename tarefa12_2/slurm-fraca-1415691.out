@@ -1,0 +1,73 @@
+[INFO] Compilando main_fraca.c...
+[INFO] Executando com 1 threads | schedule=static | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 1 threads | schedule=static | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 1 threads | schedule=dynamic | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 1 threads | schedule=dynamic | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 1 threads | schedule=guided | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 1 threads | schedule=guided | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 2 threads | schedule=static | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 2 threads | schedule=static | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 2 threads | schedule=dynamic | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 2 threads | schedule=dynamic | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 2 threads | schedule=guided | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 2 threads | schedule=guided | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 4 threads | schedule=static | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 4 threads | schedule=static | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 4 threads | schedule=dynamic | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 4 threads | schedule=dynamic | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 4 threads | schedule=guided | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 4 threads | schedule=guided | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 8 threads | schedule=static | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 8 threads | schedule=static | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 8 threads | schedule=dynamic | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 8 threads | schedule=dynamic | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 8 threads | schedule=guided | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 8 threads | schedule=guided | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 16 threads | schedule=static | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 16 threads | schedule=static | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 16 threads | schedule=dynamic | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 16 threads | schedule=dynamic | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 16 threads | schedule=guided | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 16 threads | schedule=guided | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 32 threads | schedule=static | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 32 threads | schedule=static | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 32 threads | schedule=dynamic | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 32 threads | schedule=dynamic | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 32 threads | schedule=guided | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory
+[INFO] Executando com 32 threads | schedule=guided | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415691/slurm_script: line 26: ./main_fraco: No such file or directory

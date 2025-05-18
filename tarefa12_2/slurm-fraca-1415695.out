@@ -1,0 +1,20 @@
+[INFO] Compilando main_fraca.c...
+[INFO] Executando com 1 threads | schedule=static | collapse=1 | N_base=50
+[INFO] Executando com 1 threads | schedule=static | collapse=2 | N_base=50
+[INFO] Executando com 1 threads | schedule=dynamic | collapse=1 | N_base=50
+[INFO] Executando com 1 threads | schedule=dynamic | collapse=2 | N_base=50
+[INFO] Executando com 1 threads | schedule=guided | collapse=1 | N_base=50
+[INFO] Executando com 1 threads | schedule=guided | collapse=2 | N_base=50
+[INFO] Executando com 2 threads | schedule=static | collapse=1 | N_base=50
+[INFO] Executando com 2 threads | schedule=static | collapse=2 | N_base=50
+[INFO] Executando com 2 threads | schedule=dynamic | collapse=1 | N_base=50
+[INFO] Executando com 2 threads | schedule=dynamic | collapse=2 | N_base=50
+[INFO] Executando com 2 threads | schedule=guided | collapse=1 | N_base=50
+[INFO] Executando com 2 threads | schedule=guided | collapse=2 | N_base=50
+[INFO] Executando com 4 threads | schedule=static | collapse=1 | N_base=50
+[INFO] Executando com 4 threads | schedule=static | collapse=2 | N_base=50
+[INFO] Executando com 4 threads | schedule=dynamic | collapse=1 | N_base=50
+[INFO] Executando com 4 threads | schedule=dynamic | collapse=2 | N_base=50
+[INFO] Executando com 4 threads | schedule=guided | collapse=1 | N_base=50
+[INFO] Executando com 4 threads | schedule=guided | collapse=2 | N_base=50
+[INFO] Executando com 8 threads | schedule=static | collapse=1 | N_base=50
