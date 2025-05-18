@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=navier-stokes-affinity
+#SBATCH --job-name=navier-stokes-forte
 #SBATCH --output=slurm-affinity-%j.out
 #SBATCH --time=0-0:20
 #SBATCH --partition=intel-128
