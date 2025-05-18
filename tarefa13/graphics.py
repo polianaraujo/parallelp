@@ -3,68 +3,71 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-# Estilo de gráfico
+# Configurações gerais
 sns.set(style="whitegrid")
 
-# Carregando os dados
-df = pd.read_csv("results_escalabilidade_forte.csv", on_bad_lines='skip')
+# Carregar os dados
+file_path = "results_escalabilidade_forte.csv"
+data = pd.read_csv(file_path)
 
-# Garantindo que valores numéricos estejam corretos
-df['Time'] = pd.to_numeric(df['Time'], errors='coerce')
-df['Threads'] = pd.to_numeric(df['Threads'], errors='coerce')
-df['Schedule'] = df['Schedule'].astype(str)
+# Converter valores de 'nan' para NaN
+data.replace("nan", pd.NA, inplace=True)
+data.dropna(inplace=True)
 
 # Criar diretório para gráficos
 os.makedirs("graficos_navier_stokes", exist_ok=True)
 
-# Gráfico 1: Tempo vs Threads por Schedule
-plt.figure(figsize=(10, 6))
-for schedule in df['Schedule'].unique():
-    sub_df = df[df['Schedule'] == schedule]
-    plt.plot(sub_df['Threads'], sub_df['Time'], marker='o', label=schedule)
+# Converter colunas numéricas
+numeric_cols = ['ExecutionTime', 'CenterValue', 'AverageValue']
+for col in numeric_cols:
+    data[col] = pd.to_numeric(data[col], errors='coerce')
 
-plt.title("Tempo de Execução vs Threads por Tipo de Afinidade (Schedule)")
-plt.xlabel("Número de Threads")
-plt.ylabel("Tempo de Execução (s)")
-plt.legend(title="Schedule")
-plt.xticks(df['Threads'].unique())
-plt.grid(True)
-plt.tight_layout()
-plt.savefig("graficos_navier_stokes/tempo_vs_threads_schedule.png")
-plt.close()
+# 1. Análise de Tempo de Execução por Afinidade e Número de Threads
+def plot_execution_time_by_affinity(data):
+    plt.figure(figsize=(12, 6))
+    sns.barplot(x="Affinity", y="ExecutionTime", hue="Threads", data=data)
+    plt.title("Tempo de Execução por Afinidade e Número de Threads")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig("graficos_navier_stokes/execution_time_by_affinity.png")
+    plt.show()
 
-# Gráfico 2: Speedup teórico (Thread 1 como base)
-base_time = df[df['Threads'] == 1].groupby('Schedule')['Time'].mean()
-speedup_df = df.copy()
-speedup_df['Speedup'] = speedup_df.apply(lambda row: base_time.get(row['Schedule'], 1) / row['Time'], axis=1)
+# 4. Escalabilidade Forte – Análise de Speedup
+def calculate_speedup(data):
+    baseline = data[data['Threads'] == 1]['ExecutionTime'].mean()
+    data = data.copy()
+    data['Speedup'] = baseline / data['ExecutionTime']
+    return data
 
-plt.figure(figsize=(10, 6))
-for schedule in speedup_df['Schedule'].unique():
-    sub_df = speedup_df[speedup_df['Schedule'] == schedule]
-    plt.plot(sub_df['Threads'], sub_df['Speedup'], marker='o', label=schedule)
 
-plt.title("Speedup vs Threads por Tipo de Afinidade (Schedule)")
-plt.xlabel("Número de Threads")
-plt.ylabel("Speedup")
-plt.legend(title="Schedule")
-plt.xticks(df['Threads'].unique())
-plt.grid(True)
-plt.tight_layout()
-plt.savefig("graficos_navier_stokes/speedup_vs_threads_schedule.png")
-plt.close()
+def plot_speedup_by_affinity(data):
+    plt.figure(figsize=(12, 6))
+    sns.lineplot(x="Threads", y="Speedup", hue="Affinity", data=data, marker="o")
+    plt.title("Speedup por Afinidade e Número de Threads")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig("graficos_navier_stokes/speedup_by_affinity.png")
+    plt.show()
 
-# Gráfico 3: CenterValue vs Threads por Schedule (opcional)
-plt.figure(figsize=(10, 6))
-for schedule in df['Schedule'].unique():
-    sub_df = df[df['Schedule'] == schedule]
-    plt.plot(sub_df['Threads'], sub_df['CenterValue'], marker='o', label=schedule)
+# 5. Análise de Eficiência
+def plot_efficiency_by_affinity(data):
+    data['Efficiency'] = data['Speedup'] / data['Threads']
+    plt.figure(figsize=(12, 6))
+    sns.lineplot(x="Threads", y="Efficiency", hue="Affinity", data=data, marker="o")
+    plt.title("Eficiência por Afinidade e Número de Threads")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig("graficos_navier_stokes/efficiency_by_affinity.png")
+    plt.show()
 
-plt.title("Valor Central vs Threads por Schedule")
-plt.xlabel("Número de Threads")
-plt.ylabel("CenterValue")
-plt.legend(title="Schedule")
-plt.xticks(df['Threads'].unique())
-plt.grid(True)
-plt.tight_layout()
-plt.savefig("graficos_navier_stokes/centervalue_vs_threads_schedule.png")
-plt.close()
+
+
+def main():
+    data_with_speedup = calculate_speedup(data)
+    plot_execution_time_by_affinity(data_with_speedup)
+    plot_speedup_by_affinity(data_with_speedup)
+    plot_efficiency_by_affinity(data_with_speedup)
+
+
+if __name__ == "__main__":
+    main()
