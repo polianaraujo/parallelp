@@ -21,5 +21,5 @@ for AFFINITY in "${AFFINITIES[@]}"
 do
     echo "Executando com OMP_PROC_BIND=$AFFINITY"
     export OMP_PROC_BIND=$AFFINITY
-    ./main
+    ./main "$AFFINITY"
 done

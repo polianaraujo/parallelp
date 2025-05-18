@@ -18,7 +18,8 @@ void initialize_field(float **field, int nx, int ny) {
     field[nx / 2][ny / 2] = 1.0f;
 }
 
-void run_simulation_forte(int num_threads, int nx, int ny, const char *schedule_type, int chunk_size) {
+void run_simulation_forte(int num_threads, int nx, int ny, const char *schedule_type, int chunk_size, const char *affinity_type)
+{
     float **field = malloc(nx * sizeof(float*));
     float **next_field = malloc(nx * sizeof(float*));
     for (int i = 0; i < nx; i++) {
@@ -69,9 +70,10 @@ void run_simulation_forte(int num_threads, int nx, int ny, const char *schedule_
 
     FILE *file = fopen("results_escalabilidade_forte.csv", "a");
     if (file) {
-        fprintf(file, "%d,%d,%d,%s,%d,%.5f,%.5f,%.5f\n",
-                num_threads, nx, ny, schedule_type, chunk_size,
-                exec_time, center_value, avg_value);
+        fprintf(file, "%d,%d,%d,%s,%d,%s,%.5f,%.5f,%.5f\n",
+        num_threads, nx, ny, schedule_type, chunk_size, affinity_type,
+        exec_time, center_value, avg_value);
+
         fclose(file);
     }
 
@@ -83,27 +85,32 @@ void run_simulation_forte(int num_threads, int nx, int ny, const char *schedule_
     free(next_field);
 }
 
-int main() {
-    FILE *file = fopen("results_escalabilidade_forte.csv", "w");
-    fprintf(file, "Threads,NX,NY,Schedule,ChunkSize,Time,CenterValue,AverageValue\n");
+int main(int argc, char *argv[]) {
+    const char *affinity_type = (argc > 1) ? argv[1] : "undefined";
+
+    FILE *file = fopen("results_escalabilidade_forte.csv", "a");
+    if (!file) {
+        fprintf(stderr, "Erro ao abrir arquivo de resultados.\n");
+        return 1;
+    }
     fclose(file);
 
     int threads[] = {1, 2, 4, 8, 16};
     const char *schedules[] = {"static"}; // pode adicionar "dynamic", "guided"
     int chunk_sizes[] = {4};              // pode adicionar mais tamanhos
 
-    int nx = 100;  // Fixos para escalabilidade forte
+    int nx = 100;
     int ny = 100;
 
     for (int t = 0; t < 5; t++) {
         int num_threads = threads[t];
-
         for (int s = 0; s < 1; s++) {
             for (int c = 0; c < 1; c++) {
-                run_simulation_forte(num_threads, nx, ny, schedules[s], chunk_sizes[c]);
+                run_simulation_forte(num_threads, nx, ny, schedules[s], chunk_sizes[c], affinity_type);
             }
         }
     }
 
     return 0;
 }
+
