@@ -7,7 +7,7 @@
 echo "Inicializando JOB: Escalabilidade Fraca"
 
 # Compilação
-gcc -fopenmp fraca_stdout.c -o escalabilidade_fraca
+gcc -fopenmp ns_esc_fraca.c -o escalabilidade_fraca
 
 # Execução única (o próprio código varia threads e dimensões)
 echo "Executando escalabilidade fraca com variação de threads e tamanho do problema"
