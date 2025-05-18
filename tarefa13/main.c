@@ -8,23 +8,23 @@
 #define DT 0.01f
 #define VISCOSITY 0.1f
 
-void initialize_field(float **field, int nx, int ny) {
+void initialize_field(float *field, int nx, int ny) {
     for (int i = 0; i < nx; i++) {
         for (int j = 0; j < ny; j++) {
-            field[i][j] = 0.0f;
+            field[i * ny + j] = 0.0f;
         }
     }
     // Pequena perturbação no centro
-    field[nx / 2][ny / 2] = 1.0f;
+    field[(nx / 2) * ny + (ny / 2)] = 1.0f;
 }
 
-void run_simulation_forte(int num_threads, int nx, int ny, const char *schedule_type, int chunk_size, const char *affinity_type)
-{
-    float **field = malloc(nx * sizeof(float*));
-    float **next_field = malloc(nx * sizeof(float*));
-    for (int i = 0; i < nx; i++) {
-        field[i] = malloc(ny * sizeof(float));
-        next_field[i] = malloc(ny * sizeof(float));
+void run_simulation_forte(int num_threads, int nx, int ny, const char *schedule_type, int chunk_size, const char *affinity_type) {
+    float *field = malloc(nx * ny * sizeof(float));
+    float *next_field = malloc(nx * ny * sizeof(float));
+
+    if (!field || !next_field) {
+        fprintf(stderr, "Erro na alocação da matriz.\n");
+        exit(EXIT_FAILURE);
     }
 
     omp_set_num_threads(num_threads);
@@ -42,18 +42,17 @@ void run_simulation_forte(int num_threads, int nx, int ny, const char *schedule_
     double start_time = omp_get_wtime();
 
     for (int step = 0; step < NSTEPS; step++) {
-        #pragma omp parallel for collapse(2) schedule(runtime)
+        #pragma omp parallel for schedule(runtime)
         for (int i = 1; i < nx - 1; i++) {
             for (int j = 1; j < ny - 1; j++) {
-                float laplacian = field[i+1][j] + field[i-1][j] +
-                                  field[i][j+1] + field[i][j-1] -
-                                  4.0f * field[i][j];
-                next_field[i][j] = field[i][j] + VISCOSITY * DT * laplacian;
+                int idx = i * ny + j;
+                float laplacian = field[(i + 1) * ny + j] + field[(i - 1) * ny + j] +
+                                  field[i * ny + (j + 1)] + field[i * ny + (j - 1)] -
+                                  4.0f * field[idx];
+                next_field[idx] = field[idx] + VISCOSITY * DT * laplacian;
             }
         }
-
-        // Trocar ponteiros
-        float **temp = field;
+        float *temp = field;
         field = next_field;
         next_field = temp;
     }
@@ -61,26 +60,22 @@ void run_simulation_forte(int num_threads, int nx, int ny, const char *schedule_
     double end_time = omp_get_wtime();
     double exec_time = end_time - start_time;
 
-    float center_value = field[nx/2][ny/2];
+    float center_value = field[(nx / 2) * ny + (ny / 2)];
     float sum = 0.0f;
-    for (int i = 0; i < nx; i++)
-        for (int j = 0; j < ny; j++)
-            sum += field[i][j];
+    #pragma omp parallel for reduction(+:sum)
+    for (int i = 0; i < nx * ny; i++) {
+        sum += field[i];
+    }
     float avg_value = sum / (nx * ny);
 
     FILE *file = fopen("results_escalabilidade_forte.csv", "a");
     if (file) {
         fprintf(file, "%d,%d,%d,%s,%d,%s,%.5f,%.5f,%.5f\n",
-        num_threads, nx, ny, schedule_type, chunk_size, affinity_type,
-        exec_time, center_value, avg_value);
-
+                num_threads, nx, ny, schedule_type, chunk_size, affinity_type,
+                exec_time, center_value, avg_value);
         fclose(file);
     }
 
-    for (int i = 0; i < nx; i++) {
-        free(field[i]);
-        free(next_field[i]);
-    }
     free(field);
     free(next_field);
 }
@@ -98,16 +93,13 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     if (!existe) {
-        // Cabeçalho (nomes das colunas)
         fprintf(file, "Threads,nx,ny,Schedule,ChunkSize,Affinity,ExecutionTime,CenterValue,AverageValue\n");
     }
     fclose(file);
 
-
     int threads[] = {1, 2, 4, 8, 16};
-    const char *schedules[] = {"static"}; // pode adicionar "dynamic", "guided"
-    int chunk_sizes[] = {4};              // pode adicionar mais tamanhos
-
+    const char *schedules[] = {"static"};
+    int chunk_sizes[] = {4};
     int nx = 100;
     int ny = 100;
 
@@ -122,4 +114,3 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-

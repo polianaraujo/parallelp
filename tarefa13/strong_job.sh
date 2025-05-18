@@ -4,6 +4,11 @@
 #SBATCH --partition=intel-128
 #SBATCH --output=slurm-strong-threads-%j.out
 
+# Remover o executável anterior e diretório de resultados
+rm -f main
+rm -rf results/
+mkdir -p results
+
 # Compilar o código
 echo "Compilando o código C..."
 gcc -fopenmp -O2 -o main main.c
@@ -11,6 +16,7 @@ if [ $? -ne 0 ]; then
     echo "Erro na compilação."
     exit 1
 fi
+
 echo "Compilação concluída."
 
 # Valores de affinities (OpenMP usa OMP_PROC_BIND para controle de afinidade)
