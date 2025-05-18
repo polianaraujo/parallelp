@@ -4,32 +4,18 @@
 #SBATCH --partition=intel-128
 #SBATCH --output=slurm-out-%j.txt
 
-echo "Iniciando job SLURM..."
+# Diretório de trabalho
+EXEC=navier_stokes_affinity
+SRC=main2.c
+RESULTS_DIR="results_affinity_$(date +%Y%m%d_%H%M%S)"
+mkdir -p $RESULTS_DIR
 
-# 1. Compila o código
-EXEC="navier_stokes"
-SRC="main.c"
+echo "[INFO] Compilando código com OpenMP..."
+gcc -O3 -fopenmp -march=native -o $EXEC $SRC -lm || { echo "Erro na compilação"; exit 1; }
 
-echo "Compilando com GCC e OpenMP..."
-gcc -O3 -fopenmp -march=native -o $EXEC $SRC -lm
-if [ $? -ne 0 ]; then
-    echo "Erro na compilação."
-    exit 1
-fi
+echo "[INFO] Executando simulação..."
+./$EXEC > $RESULTS_DIR/results.csv
 
-# 2. Diretório de resultados
-DIR="results_$(date +%Y%m%d_%H%M%S)"
-mkdir -p "$DIR"
-OUTPUT="$DIR/result.csv"
+echo "[INFO] Resultados salvos em $RESULTS_DIR/results.csv"
 
-# 3. Executa e salva resultados
-echo "Executando simulação..."
-echo "num_threads,execution_time" > "$OUTPUT"
-./$EXEC >> "$OUTPUT"
-
-# 4. Análise textual simples
-echo "Gerando análise..."
-echo -e "\n=== TEMPOS DE EXECUÇÃO POR THREADS ===" > "$DIR/analysis.txt"
-cat "$OUTPUT" | grep -v num_threads >> "$DIR/analysis.txt"
-
-echo "Resultados salvos em: $OUTPUT"
+echo "[INFO] Fim da execução."
