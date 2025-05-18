@@ -4,7 +4,7 @@
 #include <math.h>
 #include <omp.h>
 
-#define N 128  // Reduzido para testes mais rápidos
+#define N 128
 #define NSTEPS 100
 #define DT 0.01f
 #define DX 1.0f
@@ -21,18 +21,9 @@ void initialize() {
 void run_simulation(const char* affinity_type, int num_threads) {
     initialize();
     
-    // Configura a afinidade de threads conforme especificado
-    if (strcmp(affinity_type, "none") == 0) {
-        omp_set_schedule(omp_sched_guided, 1024);
-    } else if (strcmp(affinity_type, "compact") == 0) {
-        omp_set_schedule(omp_sched_guided, 1024);
-        omp_set_affinity_format("compact");
-    } else if (strcmp(affinity_type, "scatter") == 0) {
-        omp_set_schedule(omp_sched_guided, 1024);
-        omp_set_affinity_format("scatter");
-    } else if (strcmp(affinity_type, "balanced") == 0) {
-        omp_set_schedule(omp_sched_guided, 1024);
-        omp_set_affinity_format("balanced");
+    // Configuração simplificada de afinidade (versão portável)
+    if (strcmp(affinity_type, "none") != 0) {
+        printf("Aviso: Afinidade '%s' solicitada mas não configurada (OpenMP pode não suportar)\n", affinity_type);
     }
     
     omp_set_num_threads(num_threads);
@@ -67,27 +58,11 @@ void run_simulation(const char* affinity_type, int num_threads) {
     double end = omp_get_wtime();
     double elapsed = end - start;
     
-    // Imprime resultados em formato CSV
     printf("\"%s\",%d,%.6f\n", affinity_type, num_threads, elapsed);
 }
 
 int main() {
-    // Cabeçalho do CSV
     printf("affinity_type,num_threads,execution_time\n");
     
     const char* affinity_types[] = {"none", "compact", "scatter", "balanced"};
-    int max_threads = omp_get_max_threads();
-    
-    // Testa cada tipo de afinidade com diferentes números de threads
-    for (int i = 0; i < 4; i++) {
-        for (int threads = 1; threads <= max_threads; threads++) {
-            // Executa 3 vezes para média (reduzir variações)
-            double total_time = 0;
-            for (int run = 0; run < 3; run++) {
-                run_simulation(affinity_types[i], threads);
-            }
-        }
-    }
-    
-    return 0;
-}
+    int max_threads = omp_get_max_threads
