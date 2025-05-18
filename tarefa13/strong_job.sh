@@ -8,23 +8,19 @@
 rm -f main
 rm -rf results_escalabilidade_forte.csv
 
-# Compilar o código
 echo "Compilando o código C..."
-gcc -fopenmp -O2 -o main main.c
+gcc -O3 -fopenmp -o main main.c
 if [ $? -ne 0 ]; then
-    echo "Erro na compilação."
-    exit 1
+  echo "Erro na compilação!"
+  exit 1
 fi
-
 echo "Compilação concluída."
 
-# Valores de affinities (OpenMP usa OMP_PROC_BIND para controle de afinidade)
 AFFINITIES=("false" "true" "close" "spread" "master")
 
-# Executar o programa com diferentes configurações de OMP_PROC_BIND
 for AFFINITY in "${AFFINITIES[@]}"
 do
-    echo "Executando com OMP_PROC_BIND=$AFFINITY"
-    export OMP_PROC_BIND=$AFFINITY
-    ./main "$AFFINITY"
+  echo "Executando com OMP_PROC_BIND=$AFFINITY"
+  export OMP_PROC_BIND=$AFFINITY
+  ./main "$AFFINITY"
 done
