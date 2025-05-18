@@ -88,12 +88,21 @@ void run_simulation_forte(int num_threads, int nx, int ny, const char *schedule_
 int main(int argc, char *argv[]) {
     const char *affinity_type = (argc > 1) ? argv[1] : "undefined";
 
-    FILE *file = fopen("results_escalabilidade_forte.csv", "a");
+    FILE *file = fopen("results_escalabilidade_forte.csv", "r");
+    int existe = (file != NULL);
+    if (file) fclose(file);
+
+    file = fopen("results_escalabilidade_forte.csv", "a");
     if (!file) {
         fprintf(stderr, "Erro ao abrir arquivo de resultados.\n");
         return 1;
     }
+    if (!existe) {
+        // Cabeçalho (nomes das colunas)
+        fprintf(file, "Threads,nx,ny,Schedule,ChunkSize,Affinity,ExecutionTime,CenterValue,AverageValue\n");
+    }
     fclose(file);
+
 
     int threads[] = {1, 2, 4, 8, 16};
     const char *schedules[] = {"static"}; // pode adicionar "dynamic", "guided"
