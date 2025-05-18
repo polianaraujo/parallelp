@@ -1,0 +1,23 @@
+Compilando o código C...
+main.c: In function ‘run_simulation_forte’:
+main.c:40:22: warning: passing argument 1 of ‘initialize_field’ from incompatible pointer type [-Wincompatible-pointer-types]
+     initialize_field(field, nx, ny);
+                      ^~~~~
+main.c:11:30: note: expected ‘float *’ but argument is of type ‘float **’
+ void initialize_field(float *field, int nx, int ny) {
+                       ~~~~~~~^~~~~
+Compilação concluída.
+Executando com OMP_PROC_BIND=false
+/var/tmp/slurmd.spool/job1415513/slurm_script: line 26: 519322 Segmentation fault      (core dumped) ./main "$AFFINITY"
+Executando com OMP_PROC_BIND=true
+malloc(): invalid size (unsorted)
+/var/tmp/slurmd.spool/job1415513/slurm_script: line 26: 519325 Aborted                 (core dumped) ./main "$AFFINITY"
+Executando com OMP_PROC_BIND=close
+malloc(): invalid size (unsorted)
+/var/tmp/slurmd.spool/job1415513/slurm_script: line 26: 519336 Aborted                 (core dumped) ./main "$AFFINITY"
+Executando com OMP_PROC_BIND=spread
+malloc(): invalid size (unsorted)
+/var/tmp/slurmd.spool/job1415513/slurm_script: line 26: 519344 Aborted                 (core dumped) ./main "$AFFINITY"
+Executando com OMP_PROC_BIND=master
+malloc(): invalid size (unsorted)
+/var/tmp/slurmd.spool/job1415513/slurm_script: line 26: 519352 Aborted                 (core dumped) ./main "$AFFINITY"
