@@ -5,8 +5,8 @@
 #SBATCH --partition=intel-128
 
 # Compilar o código
-echo "[INFO] Compilando main_fraco.c..."
-gcc -fopenmp -O3 main_fraco.c -o main_fraco
+echo "[INFO] Compilando main_fraca.c..."
+gcc -fopenmp -O3 main_fraca.c -o main_fraca
 if [ $? -ne 0 ]; then
     echo "[ERRO] Falha na compilação"
     exit 1
@@ -27,7 +27,7 @@ for nt in "${THREADS[@]}"; do
         for c in "${COLLAPSES[@]}"; do
             export OMP_NUM_THREADS=$nt
             echo "[INFO] Executando com $OMP_NUM_THREADS threads | schedule=$sched | collapse=$c | N_base=$N_BASE"
-            ./main_fraco $sched $c $N_BASE >> $CSV
+            ./main_fraca $sched $c $N_BASE >> $CSV
         done
     done
 done
