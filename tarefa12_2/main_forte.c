@@ -3,71 +3,56 @@
 #include <string.h>
 #include <omp.h>
 
-#define N 128
-#define NSTEPS 100
-#define DT 0.01f
-#define DX 1.0f
-#define VISC 0.1f
-
-float u[N][N][N], u_new[N][N][N];
-
-void initialize() {
-    memset(u, 0, sizeof(u));
-    int cx = N / 2, cy = N / 2, cz = N / 2;
-    u[cx][cy][cz] = 1.0f; // Pequena perturbação central
-}
-
-void simulate_step() {
-    #pragma omp parallel for collapse(3) schedule(static)
-    for (int i = 1; i < N - 1; i++) {
-        for (int j = 1; j < N - 1; j++) {
-            for (int k = 1; k < N - 1; k++) {
-                float laplacian = (u[i + 1][j][k] + u[i - 1][j][k] +
-                                   u[i][j + 1][k] + u[i][j - 1][k] +
-                                   u[i][j][k + 1] + u[i][j][k - 1] -
-                                   6.0f * u[i][j][k]) / (DX * DX);
-                u_new[i][j][k] = u[i][j][k] + DT * VISC * laplacian;
-            }
+float ***alloc_3d(int N) {
+    float ***array = malloc(N * sizeof(float **));
+    for (int i = 0; i < N; i++) {
+        array[i] = malloc(N * sizeof(float *));
+        for (int j = 0; j < N; j++) {
+            array[i][j] = calloc(N, sizeof(float));
         }
     }
-    memcpy(u, u_new, sizeof(u));
+    return array;
 }
 
-int main(int argc, char* argv[]) {
-    if (argc < 4) {
-        fprintf(stderr, "Uso: %s <schedule> <collapse> <n_threads>\n", argv[0]);
+void free_3d(float ***array, int N) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            free(array[i][j]);
+        }
+        free(array[i]);
+    }
+    free(array);
+}
+
+void initialize(float ***u, int N) {
+    int cx = N / 2, cy = N / 2, cz = N / 2;
+    u[cx][cy][cz] = 1.0f;
+}
+
+int main(int argc, char *argv[]) {
+    if (argc != 4) {
+        printf("Uso: %s <schedule: static|dynamic|guided> <collapse: 1|2|3> <N>\n", argv[0]);
         return 1;
     }
 
-    char* schedule = argv[1];
+    char *schedule = argv[1];
     int collapse_level = atoi(argv[2]);
-    int n_threads = atoi(argv[3]);
-    omp_set_num_threads(n_threads);
-    ...
+    int N = atoi(argv[3]);
+    int NSTEPS = 100;
+    float DT = 0.01f, DX = 1.0f, VISC = 0.1f;
 
+    float ***u = alloc_3d(N);
+    float ***u_new = alloc_3d(N);
 
-    omp_sched_t omp_schedule;
-    if (strcmp(schedule, "static") == 0) {
-        omp_schedule = omp_sched_static;
-    } else if (strcmp(schedule, "dynamic") == 0) {
-        omp_schedule = omp_sched_dynamic;
-    } else if (strcmp(schedule, "guided") == 0) {
-        omp_schedule = omp_sched_guided;
-    } else {
-        fprintf(stderr, "Schedule inválido. Use static, dynamic ou guided.\n");
-        return 1;
-    }
-    omp_set_schedule(omp_schedule, 0);
-
-    int num_threads = omp_get_max_threads();
-    initialize();
+    initialize(u, N);
 
     double start = omp_get_wtime();
+
     for (int step = 0; step < NSTEPS; step++) {
         if (collapse_level == 1) {
-            #pragma omp parallel for collapse(1) schedule(runtime)
-            for (int i = 1; i < N - 1; i++)
-                for (int j = 1; j < N - 1; j++)
+            #pragma omp parallel for schedule(static) collapse(1)
+            for (int i = 1; i < N - 1; i++) {
+                for (int j = 1; j < N - 1; j++) {
                     for (int k = 1; k < N - 1; k++) {
                         float laplacian = (u[i + 1][j][k] + u[i - 1][j][k] +
                                            u[i][j + 1][k] + u[i][j - 1][k] +
@@ -75,10 +60,12 @@ int main(int argc, char* argv[]) {
                                            6.0f * u[i][j][k]) / (DX * DX);
                         u_new[i][j][k] = u[i][j][k] + DT * VISC * laplacian;
                     }
+                }
+            }
         } else if (collapse_level == 2) {
-            #pragma omp parallel for collapse(2) schedule(runtime)
-            for (int i = 1; i < N - 1; i++)
-                for (int j = 1; j < N - 1; j++)
+            #pragma omp parallel for schedule(static) collapse(2)
+            for (int i = 1; i < N - 1; i++) {
+                for (int j = 1; j < N - 1; j++) {
                     for (int k = 1; k < N - 1; k++) {
                         float laplacian = (u[i + 1][j][k] + u[i - 1][j][k] +
                                            u[i][j + 1][k] + u[i][j - 1][k] +
@@ -86,10 +73,12 @@ int main(int argc, char* argv[]) {
                                            6.0f * u[i][j][k]) / (DX * DX);
                         u_new[i][j][k] = u[i][j][k] + DT * VISC * laplacian;
                     }
+                }
+            }
         } else {
-            #pragma omp parallel for collapse(3) schedule(runtime)
-            for (int i = 1; i < N - 1; i++)
-                for (int j = 1; j < N - 1; j++)
+            #pragma omp parallel for schedule(static) collapse(3)
+            for (int i = 1; i < N - 1; i++) {
+                for (int j = 1; j < N - 1; j++) {
                     for (int k = 1; k < N - 1; k++) {
                         float laplacian = (u[i + 1][j][k] + u[i - 1][j][k] +
                                            u[i][j + 1][k] + u[i][j - 1][k] +
@@ -97,25 +86,26 @@ int main(int argc, char* argv[]) {
                                            6.0f * u[i][j][k]) / (DX * DX);
                         u_new[i][j][k] = u[i][j][k] + DT * VISC * laplacian;
                     }
+                }
+            }
         }
-        memcpy(u, u_new, sizeof(u));
+
+        // Troca os ponteiros
+        float ***temp = u;
+        u = u_new;
+        u_new = temp;
     }
+
     double end = omp_get_wtime();
     double elapsed = end - start;
+    int n_threads = omp_get_max_threads();
 
-    // Salva resultados no CSV
-    FILE* f = fopen("resultados.csv", "a");
-    if (f) {
-        printf("%s,%d,%s,%d,%d,%.6f\n", tipo_execucao, n_threads, schedule, collapse_level, N, elapsed);
+    printf("%d,%s,%d,%d,%.6f\n", n_threads, schedule, collapse_level, N, elapsed);
 
-        fclose(f);
-    } else {
-        perror("Erro ao abrir resultados.csv");
-    }
-
-    printf("Threads: %d\n", num_threads);
-    printf("Schedule: %s | Collapse: %d | Tempo: %.6f s\n", schedule, collapse_level, elapsed);
+    free_3d(u, N);
+    free_3d(u_new, N);
     return 0;
 }
 
-//gcc -fopenmp -O3 navier_stokes_visc.c -o simulador
+
+//gcc -fopenmp -O3 main_forte.c -o main_forte
