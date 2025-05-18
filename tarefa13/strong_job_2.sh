@@ -6,7 +6,7 @@
 #SBATCH --exclusive
 
 EXEC=navier_stokes_affinity
-SRC=navier_stokes_affinity.c
+SRC=main2.c
 RESULTS="results_$(date +%Y%m%d_%H%M%S).csv"
 
 echo "threads,affinity,time" > $RESULTS
