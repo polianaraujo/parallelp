@@ -24,3 +24,8 @@ Threads,nx,ny,Schedule,ChunkSize,Affinity,ExecutionTime,CenterValue,AverageValue
 4,100,100,static,4,master,0.18828,0.09505,0.00010
 8,100,100,static,4,master,0.21082,0.09505,0.00010
 16,100,100,static,4,master,0.25782,0.09505,0.00010
+1,100,100,static,4,undefined,0.10467,0.09505,0.00010
+2,100,100,static,4,undefined,0.11955,0.09505,0.00010
+4,100,100,static,4,undefined,0.13774,0.09505,0.00010
+8,100,100,static,4,undefined,0.16204,0.09505,0.00010
+16,100,100,static,4,undefined,0.20419,0.09505,0.00010

@@ -1,0 +1,2 @@
+
+=== TEMPOS DE EXECUÇÃO POR THREADS ===

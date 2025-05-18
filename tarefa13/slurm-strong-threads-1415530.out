@@ -1,0 +1,62 @@
+Verificando módulos disponíveis...
+No module(s) or extension(s) found!
+If the avail list is too long consider trying:
+
+"module --default avail" or "ml -d av" to just list the default modules.
+"module overview" or "ml ov" to display the number of modules for each name.
+
+Use "module spider" to find all possible modules and extensions.
+Use "module keyword key1 key2 ..." to search for all possible modules matching
+any of the "keys".
+
+
+
+------------------------- /opt/npad/shared/modulefiles -------------------------
+   libraries/openmpi/4.1.1-gnu8        softwares/orca/5.0.1-openmpi
+   libraries/openmpi/5.0.3-gnu8 (D)    softwares/orca/5.0.4-openmpi (D)
+
+  Where:
+   D:  Default Module
+
+If the avail list is too long consider trying:
+
+"module --default avail" or "ml -d av" to just list the default modules.
+"module overview" or "ml ov" to display the number of modules for each name.
+
+Use "module spider" to find all possible modules and extensions.
+Use "module keyword key1 key2 ..." to search for all possible modules matching
+any of the "keys".
+
+
+Lmod has detected the following error: The following module(s) are unknown:
+"gcc"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "gcc"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+Módulo gcc não encontrado, usando compilador do sistema
+Lmod has detected the following error: The following module(s) are unknown:
+"openmpi"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "openmpi"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+Módulo openmpi não encontrado, continuando sem MPI
+Compilando o código...
+Executando o programa...
+Execução concluída com sucesso!
+Resultados salvos em: results_affinity_20250518_145915/affinity_results.csv
+Gerando análise textual dos resultados...
+Análise textual gerada em: results_affinity_20250518_145915/analysis.txt
