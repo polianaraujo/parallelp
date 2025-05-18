@@ -7,10 +7,22 @@
 echo "Inicializando JOB: Escalabilidade Fraca"
 
 # Compilação
+echo "Compilando ns_esc_fraca.c..."
 gcc -fopenmp ns_esc_fraca.c -o escalabilidade_fraca
+echo "Compilação concluída."
 
-# Execução única (o próprio código varia threads e dimensões)
-echo "Executando escalabilidade fraca com variação de threads e tamanho do problema"
+# Listar conteúdo do diretório atual
+echo "Arquivos no diretório:"
+ls -lh
+
+# Verificar se o executável existe
+if [ ! -f escalabilidade_fraca ]; then
+    echo "Erro: executável não encontrado."
+    exit 1
+fi
+
+# Executar o programa
+echo "Executando ./escalabilidade_fraca"
 /home/pedarajo/repos/parallelp/tarefa12/npad/escalabilidade_fraca
 
 echo "Finalizando JOB: Escalabilidade Fraca"
