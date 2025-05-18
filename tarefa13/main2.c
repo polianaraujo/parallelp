@@ -65,4 +65,13 @@ int main() {
     printf("affinity_type,num_threads,execution_time\n");
     
     const char* affinity_types[] = {"none", "compact", "scatter", "balanced"};
-    int max_threads = omp_get_max_threads
+    int max_threads = omp_get_max_threads();
+    
+    for (int i = 0; i < 4; i++) {
+        for (int threads = 1; threads <= max_threads; threads++) {
+            run_simulation(affinity_types[i], threads);
+        }
+    }
+    
+    return 0;
+}
