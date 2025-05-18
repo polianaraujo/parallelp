@@ -36,33 +36,13 @@ void simulate() {
 }
 
 int main() {
-    printf("affinity_type,num_threads,execution_time\n");
+    int num_threads = omp_get_max_threads();
+    double start = omp_get_wtime();
+    initialize();
+    simulate();
+    double end = omp_get_wtime();
 
-    const char* affinities[] = {"none", "close", "spread"};
-    int max_threads = omp_get_max_threads();
-
-    for (int a = 0; a < 3; a++) {
-        const char* affinity = affinities[a];
-        for (int t = 1; t <= max_threads; t++) {
-            // Set variáveis de ambiente programaticamente
-            if (strcmp(affinity, "none") == 0) {
-                omp_set_proc_bind(omp_proc_bind_false);
-            } else if (strcmp(affinity, "close") == 0) {
-                omp_set_proc_bind(omp_proc_bind_close);
-            } else if (strcmp(affinity, "spread") == 0) {
-                omp_set_proc_bind(omp_proc_bind_spread);
-            }
-
-            omp_set_num_threads(t);
-            initialize();
-
-            double start = omp_get_wtime();
-            simulate();
-            double end = omp_get_wtime();
-
-            printf("%s,%d,%.6f\n", affinity, t, end - start);
-        }
-    }
-
+    printf("Threads: %d\n", num_threads);
+    printf("Tempo: %.6f segundos\n", end - start);
     return 0;
 }

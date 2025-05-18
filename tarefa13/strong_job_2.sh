@@ -1,21 +1,31 @@
 #!/bin/bash
-#SBATCH --job-name=poliana-omp-test
-#SBATCH --time=00:20:00
+#SBATCH --job-name=navier-stokes-affinity
+#SBATCH --output=slurm-affinity-%j.out
+#SBATCH --time=0-0:20
 #SBATCH --partition=intel-128
-#SBATCH --output=slurm-out-%j.txt
+#SBATCH --exclusive
 
-# Diretório de trabalho
 EXEC=navier_stokes_affinity
-SRC=main2.c
-RESULTS_DIR="results_affinity_$(date +%Y%m%d_%H%M%S)"
-mkdir -p $RESULTS_DIR
+SRC=navier_stokes_affinity.c
+RESULTS="results_$(date +%Y%m%d_%H%M%S).csv"
 
-echo "[INFO] Compilando código com OpenMP..."
+echo "threads,affinity,time" > $RESULTS
+
 gcc -O3 -fopenmp -march=native -o $EXEC $SRC -lm || { echo "Erro na compilação"; exit 1; }
 
-echo "[INFO] Executando simulação..."
-./$EXEC > $RESULTS_DIR/results.csv
+for threads in 1 2 4 8 16 32
+do
+  for affinity in none close spread
+  do
+    export OMP_NUM_THREADS=$threads
+    export OMP_PROC_BIND=$affinity
+    export OMP_PLACES=cores
 
-echo "[INFO] Resultados salvos em $RESULTS_DIR/results.csv"
+    echo "[INFO] Threads=$threads Affinity=$affinity"
+    OUTPUT=$(./$EXEC)
+    TEMPO=$(echo "$OUTPUT" | grep "Tempo" | awk '{print $2}')
+    echo "$threads,$affinity,$TEMPO" >> $RESULTS
+  done
+done
 
-echo "[INFO] Fim da execução."
+echo "[INFO] Resultados em $RESULTS"
