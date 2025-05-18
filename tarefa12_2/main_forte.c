@@ -106,7 +106,8 @@ int main(int argc, char* argv[]) {
     // Salva resultados no CSV
     FILE* f = fopen("resultados.csv", "a");
     if (f) {
-        fprintf(f, "forte,%d,%s,%d,%.6f\n", n_threads, schedule, collapse_level, elapsed);
+        printf("%s,%d,%s,%d,%d,%.6f\n", tipo_execucao, n_threads, schedule, collapse_level, N, elapsed);
+
         fclose(f);
     } else {
         perror("Erro ao abrir resultados.csv");
