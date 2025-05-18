@@ -1,7 +1,0 @@
-Compilando o código C...
-Compilação concluída.
-Executando com OMP_PROC_BIND=false
-Executando com OMP_PROC_BIND=true
-Executando com OMP_PROC_BIND=close
-Executando com OMP_PROC_BIND=spread
-Executando com OMP_PROC_BIND=master
