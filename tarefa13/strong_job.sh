@@ -6,7 +6,7 @@
 
 # Compilar o código
 echo "Compilando o código C..."
-gcc -fopenmp -O2 -o simulacao_forte main.c
+gcc -fopenmp -O2 -o main main.c
 if [ $? -ne 0 ]; then
     echo "Erro na compilação."
     exit 1
@@ -21,5 +21,5 @@ for AFFINITY in "${AFFINITIES[@]}"
 do
     echo "Executando com OMP_PROC_BIND=$AFFINITY"
     export OMP_PROC_BIND=$AFFINITY
-    ./simulacao_forte
+    ./main
 done

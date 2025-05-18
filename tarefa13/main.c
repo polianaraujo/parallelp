@@ -92,8 +92,8 @@ int main() {
     const char *schedules[] = {"static"}; // pode adicionar "dynamic", "guided"
     int chunk_sizes[] = {4};              // pode adicionar mais tamanhos
 
-    int nx = 500;  // Fixos para escalabilidade forte
-    int ny = 500;
+    int nx = 100;  // Fixos para escalabilidade forte
+    int ny = 100;
 
     for (int t = 0; t < 5; t++) {
         int num_threads = threads[t];
