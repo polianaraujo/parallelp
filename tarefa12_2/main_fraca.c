@@ -117,7 +117,8 @@ int main(int argc, char *argv[]) {
     double elapsed = end - start;
 
     // tipo_execucao = 2 (fraca)
-    printf("2,%s,%d,%d,%d,%.6f\n", schedule, n_threads, collapse_level, N, elapsed);
+    printf("%d,%s,%d,%d,%.6f\n", n_threads, schedule, collapse_level, N, elapsed);
+
 
     free_3d(u, N);
     free_3d(u_new, N);
