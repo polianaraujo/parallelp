@@ -4,58 +4,28 @@
 #SBATCH --partition=intel-128
 #SBATCH --output=slurm-strong-threads-%j.out
 
-# Apaga o arquivo de resultados antigo para evitar mistura de dados
-rm -f results_escalabilidade_forte.csv
+# Remover o executável anterior e diretório de resultados
+rm -f main
+rm -rf results/
+mkdir -p results
 
-# Define parâmetros fixos da simulação
-NX=100
-NY=100
-SCHEDULE="static"
-CHUNK=4
+# Compilar o código
+echo "Compilando o código C..."
+gcc -fopenmp -O2 -o main main.c
+if [ $? -ne 0 ]; then
+    echo "Erro na compilação."
+    exit 1
+fi
 
-# Define as afinidades a testar
+echo "Compilação concluída."
+
+# Valores de affinities (OpenMP usa OMP_PROC_BIND para controle de afinidade)
 AFFINITIES=("false" "true" "close" "spread" "master")
 
-# Define os números de threads que vai testar
-THREADS=(1 2 4 8 16)
-
-# Loop para testar todas as combinações
-for affinity in "${AFFINITIES[@]}"; do
-    echo "Testando afinidade: $affinity"
-    
-    # Configura variáveis de ambiente OpenMP conforme a afinidade
-    case $affinity in
-        false)
-            unset OMP_PLACES
-            unset OMP_PROC_BIND
-            ;;
-        true)
-            export OMP_PLACES=cores
-            export OMP_PROC_BIND=true
-            ;;
-        close)
-            export OMP_PLACES=cores
-            export OMP_PROC_BIND=close
-            ;;
-        spread)
-            export OMP_PLACES=cores
-            export OMP_PROC_BIND=spread
-            ;;
-        master)
-            export OMP_PLACES=cores
-            export OMP_PROC_BIND=master
-            ;;
-        *)
-            unset OMP_PLACES
-            unset OMP_PROC_BIND
-            ;;
-    esac
-
-    for nt in "${THREADS[@]}"; do
-        echo "  Rodando com $nt threads..."
-        export OMP_NUM_THREADS=$nt
-        ./seu_programa "$affinity"
-    done
+# Executar o programa com diferentes configurações de OMP_PROC_BIND
+for AFFINITY in "${AFFINITIES[@]}"
+do
+    echo "Executando com OMP_PROC_BIND=$AFFINITY"
+    export OMP_PROC_BIND=$AFFINITY
+    ./main "$AFFINITY"
 done
-
-echo "Todos os testes finalizados."
