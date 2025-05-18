@@ -6,8 +6,7 @@
 
 # Remover o executável anterior e diretório de resultados
 rm -f main
-rm -rf results/
-mkdir -p results
+rm -rf results_escalabilidade_forte.csv
 
 # Compilar o código
 echo "Compilando o código C..."
