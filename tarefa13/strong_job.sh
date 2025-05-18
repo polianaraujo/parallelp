@@ -4,33 +4,22 @@
 #SBATCH --partition=intel-128
 #SBATCH --output=slurm-strong-threads-%j.out
 
-# Compilação
+# Compilar o código
 echo "Compilando o código C..."
-gcc -O3 -fopenmp main.c -o main
+gcc -fopenmp -O2 -o simulacao_forte main.c
 if [ $? -ne 0 ]; then
     echo "Erro na compilação."
     exit 1
 fi
+echo "Compilação concluída."
 
-# Parâmetros de teste
-THREADS=(1 2 4 8 16)
+# Valores de affinities (OpenMP usa OMP_PROC_BIND para controle de afinidade)
 AFFINITIES=("false" "true" "close" "spread" "master")
 
-# Cabeçalho do CSV
-CSV="results_escalabilidade_forte.csv"
-echo "Threads,NX,NY,Schedule,ChunkSize,Affinity,Time,CenterValue,AverageValue" > "$CSV"
-
-# Executar testes
-for affinity in "${AFFINITIES[@]}"; do
-    export OMP_PROC_BIND=$affinity
-    echo "Afinidade: $affinity"
-
-    for t in "${THREADS[@]}"; do
-        export OMP_NUM_THREADS=$t
-        echo " - Executando com $t threads"
-
-        ./main "$affinity" >> "$CSV"
-    done
+# Executar o programa com diferentes configurações de OMP_PROC_BIND
+for AFFINITY in "${AFFINITIES[@]}"
+do
+    echo "Executando com OMP_PROC_BIND=$AFFINITY"
+    export OMP_PROC_BIND=$AFFINITY
+    ./simulacao_forte
 done
-
-echo "Experimentos concluídos. Resultados salvos em $CSV"
