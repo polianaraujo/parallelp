@@ -2,7 +2,7 @@
 Aluna: Poliana Ellen de Araújo
 
 ## 1. Introdução
-Este relatório apresenta a análise da escalabilidade de um código C para simulação de um campo de fluido baseado na equação de Navier-Strokes. O objetivo é investigar o impacto das diferentes configurações de afinidade de threads suportadas pelo OpenMP em um nó de computação do NPAD. As afinidades testadas foram: `false`, `true`, `close`, `spread` e `master`.
+Este relatório apresenta a análise da escalabilidade de um código C para simulação de um campo de fluido baseado na equação de Navier-Strokes. O objetivo é investigar o impacto das diferentes configurações de afinidade de threads suportadas pelo OpenMP em um nó de computação do NPAD.
 
 ## 2. Metodologia
 
@@ -21,37 +21,54 @@ sbatch strong_job.sh
 
 ## 3. Resultados
 
-Os valores registrados incluem o número de threads, o tipo de afinidades (``OMP_PROC_BIND``), o tempo de execução, o valor no centro do campo (``CenterValue``) e a média dos valores no campo (``AverageValue``).
+Os experimentos foram realizados no ambiente do NPAD, executando um código paralelo que resolve as equações de Navier-Stokes utilizando OpenMP. Avaliou-se o tempode execução variando:
+- O número de threads (1, 2, 4, 8, 16, 32)
+- A política de afinidade de threads (`false`, `true`, `close`, `spread`, `master`)
 
 ```
-[pedarajo@service0 tarefa13]$ cat results_escalabilidade_forte.csv
-Threads,nx,ny,Schedule,ChunkSize,Affinity,ExecutionTime,CenterValue,AverageValue
-1,100,100,static,4,false,0.08548,0.09505,0.00010
-2,100,100,static,4,false,0.06463,0.09505,-2161938778103065022432280576.00000
-4,100,100,static,4,false,0.08248,0.09505,-2161938778103065022432280576.00000
-8,100,100,static,4,false,0.09854,0.09505,-2161938778103065022432280576.00000
-16,100,100,static,4,false,0.14983,0.09505,-2161939663546780560490758144.00000
-1,100,100,static,4,true,0.08540,0.09505,0.00010
-2,100,100,static,4,true,0.05539,0.09505,0.00010
-4,100,100,static,4,true,0.08674,0.09505,0.00010
-8,100,100,static,4,true,0.12877,0.09505,0.00010
-16,100,100,static,4,true,0.17882,0.09505,0.00010
-1,100,100,static,4,close,0.08552,0.09505,0.00010
-2,100,100,static,4,close,0.05567,0.09505,0.00010
-4,100,100,static,4,close,0.06806,0.09505,0.00010
-8,100,100,static,4,close,0.09054,0.09505,0.00010
-16,100,100,static,4,close,0.13241,0.09505,0.00010
-1,100,100,static,4,spread,0.08584,0.09505,0.00010
-2,100,100,static,4,spread,0.05590,0.09505,0.00010
-4,100,100,static,4,spread,0.06824,0.09505,0.00010
-8,100,100,static,4,spread,0.09151,0.09505,0.00010
-16,100,100,static,4,spread,0.13304,0.09505,0.00010
-1,100,100,static,4,master,0.08559,0.09505,0.00010
-2,100,100,static,4,master,3.69413,0.09505,0.00010
-4,100,100,static,4,master,0.10323,0.09505,0.00010
-8,100,100,static,4,master,0.14420,0.09505,-2943295684608.00000
-16,100,100,static,4,master,0.18838,0.09505,-2943833866240.00000
+[pedarajo@service0 tarefa13]$ cat results_20250518_160541.csv
+threads,affinity,time
+1,false,0.958370
+1,true,0.933981
+1,close,0.973994
+1,spread,0.917426
+1,master,0.918329
+2,false,0.538263
+2,true,0.522186
+2,close,0.503780
+2,spread,0.550748
+2,master,0.849626
+4,false,0.347166
+4,true,0.324282
+4,close,0.348438
+4,spread,0.323327
+4,master,1.180983
+8,false,0.240428
+8,true,0.234981
+8,close,0.241779
+8,spread,0.237994
+8,master,1.784695
+16,false,0.180741
+16,true,0.168707
+16,close,0.169054
+16,spread,0.178430
+16,master,2.973133
+32,false,0.147721
+32,true,0.142729
+32,close,0.145915
+32,spread,0.144840
+32,master,5.435383
 ```
+
+|omparação das afinidades de todas as threads|Tempo vs threads por afinidade|
+|-----|-----|
+|![Comparação das afinidades de todas as threads](https://github.com/polianaraujo/parallelp/blob/main/tarefa13/graf_afinidade/comparacao_afinidades_todas_threads.png)|![Tempo vs threads por afinidade](https://github.com/polianaraujo/parallelp/blob/main/tarefa13/graf_afinidade/tempo_vs_threads_por_afinidade.png)|
+
+Os resultados mostraram uma tendÊncia de redução de tempo de execução com o aumento de threads, especialmente até 16 threads.
+
+- Com 32 threads, as afinidades `true`, `spread` e `close` apresentaram menores tempos de execução, com destaque para `true` com 0,1427s.
+- A afinidade `master `
+
 ### 3.1. Tempo de execução
 - Afinidade ``false``
     - O tempo de execução aumenta de forma não linear conforme o número de threads aumenta. Isso é um comportamento inesperado, pois a escalabilidade forte deveria reduzir o tempo de execução ou, no mínimo mantê-lo.
