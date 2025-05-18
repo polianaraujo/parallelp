@@ -46,3 +46,29 @@
 [INFO] Executando com 8 threads | schedule=guided | collapse=1 | N_base=50
 8,guided,1,400,49.890546
 [INFO] Executando com 8 threads | schedule=guided | collapse=2 | N_base=50
+8,guided,2,400,45.215975
+[INFO] Executando com 16 threads | schedule=static | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415692/slurm_script: line 23: 524947 Killed                  ./main_fraca $sched $c $N_BASE
+[INFO] Executando com 16 threads | schedule=static | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415692/slurm_script: line 23: 524963 Killed                  ./main_fraca $sched $c $N_BASE
+[INFO] Executando com 16 threads | schedule=dynamic | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415692/slurm_script: line 23: 524980 Killed                  ./main_fraca $sched $c $N_BASE
+[INFO] Executando com 16 threads | schedule=dynamic | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415692/slurm_script: line 23: 524996 Killed                  ./main_fraca $sched $c $N_BASE
+[INFO] Executando com 16 threads | schedule=guided | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415692/slurm_script: line 23: 525012 Killed                  ./main_fraca $sched $c $N_BASE
+[INFO] Executando com 16 threads | schedule=guided | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415692/slurm_script: line 23: 525028 Killed                  ./main_fraca $sched $c $N_BASE
+[INFO] Executando com 32 threads | schedule=static | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415692/slurm_script: line 23: 525045 Killed                  ./main_fraca $sched $c $N_BASE
+[INFO] Executando com 32 threads | schedule=static | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415692/slurm_script: line 23: 525077 Killed                  ./main_fraca $sched $c $N_BASE
+[INFO] Executando com 32 threads | schedule=dynamic | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415692/slurm_script: line 23: 525109 Killed                  ./main_fraca $sched $c $N_BASE
+[INFO] Executando com 32 threads | schedule=dynamic | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415692/slurm_script: line 23: 525141 Killed                  ./main_fraca $sched $c $N_BASE
+[INFO] Executando com 32 threads | schedule=guided | collapse=1 | N_base=50
+/var/tmp/slurmd.spool/job1415692/slurm_script: line 23: 525173 Killed                  ./main_fraca $sched $c $N_BASE
+[INFO] Executando com 32 threads | schedule=guided | collapse=2 | N_base=50
+/var/tmp/slurmd.spool/job1415692/slurm_script: line 23: 525214 Killed                  ./main_fraca $sched $c $N_BASE
+slurmstepd: error: Detected 12 oom-kill event(s) in StepId=1415692.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.
