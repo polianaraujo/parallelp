@@ -14,7 +14,8 @@ gcc -fopenmp ns_esc_fraca.c -o escalabilidade_fraca
 # do
 # export OMP_NUM_THREADS=$threads
 echo "Executando escalabilidade fraca com variação de threads e tamanho do problema"
-/home/pedarajo/repos/parallelp/tarefa12/npad/escalabilidade_fraca
+# /home/pedarajo/repos/parallelp/tarefa12/npad/escalabilidade_fraca
+./escalabilidade_fraca
 # done
 
 echo "Finalizando JOB: Escalabilidade Fraca"
