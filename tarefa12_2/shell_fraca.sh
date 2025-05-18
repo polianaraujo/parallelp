@@ -23,7 +23,7 @@ for nt in "${THREADS[@]}"; do
         for c in "${COLLAPSES[@]}"; do
             export OMP_NUM_THREADS=$nt
             echo "[INFO] Executando com $OMP_NUM_THREADS threads | schedule=$sched | collapse=$c | N_base=$N_BASE"
-            ./main_fraco $sched $c $N_BASE
+            ./main_fraca $sched $c $N_BASE
         done
     done
 done
