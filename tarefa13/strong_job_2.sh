@@ -15,7 +15,7 @@ gcc -O3 -fopenmp -march=native -o $EXEC $SRC -lm || { echo "Erro na compilação
 
 for threads in 1 2 4 8 16 32
 do
-  for affinity in none close spread
+  for affinity in false true close spread master
   do
     export OMP_NUM_THREADS=$threads
     export OMP_PROC_BIND=$affinity
