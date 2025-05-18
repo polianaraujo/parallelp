@@ -18,7 +18,7 @@ EXEC="navier_stokes_affinity"
 
 # 3. Compila o código com otimizações (removendo a função não suportada)
 echo "Compilando o código..."
-gcc -O3 -fopenmp -march=native -o $EXEC navier_stokes_affinity.c -lm
+gcc -O3 -fopenmp -march=native -o $EXEC main2.c -lm
 
 # Verifica se a compilação foi bem sucedida
 if [ $? -ne 0 ]; then
