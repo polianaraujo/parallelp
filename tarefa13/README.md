@@ -67,10 +67,15 @@ threads,affinity,time
 Os resultados mostraram uma tendÊncia de redução de tempo de execução com o aumento de threads, especialmente até 16 threads.
 
 - Com 32 threads, as afinidades `true`, `spread` e `close` apresentaram menores tempos de execução, com destaque para `true` com 0,1427s.
-- A afinidade `master `
+- A afinidade `master`, por outro lado, apresentou degradação severa do desempenho, chegando a 5,4353s com 32 threads.
+- As afinidades `spread` e `true` foram as mais consistentes, mantendo tempos baixos e estáveis conforme o número de threads aumentava.
+- O tempo com uma thread (serial) ficou entre 0,91s e 0,97s, servindo como referência para o cálculo de speedup.
 
-### 3.1. Tempo de execução
-- Afinidade ``false``
-    - O tempo de execução aumenta de forma não linear conforme o número de threads aumenta. Isso é um comportamento inesperado, pois a escalabilidade forte deveria reduzir o tempo de execução ou, no mínimo mantê-lo.
+Os gráficos evidenciam a importância da escolha adequada da afinidade no desempenho paralelo.
 
 ## 4. Conclusões
+
+A análise demonstrou que a configuração da afinidade de threads tem impacto direto na escalabilidade e desempenho de programas paralelizados com OpenMP, e as principais conclusões são:
+- A utilização de múltiplas threads melhora significativamente o tempo de execução, especialmente com as afinidades `true` e `spread`.
+- A afinidade `master` é desaconselhada para execuções paralelas com mais de 4 threads, em razão da limitação de alocação de threads em um único número ou socket.
+- Para aplicações similares executadas em ambientes HPC como o NPAD, a escolha criteriosa da afinidade pode representar uma economia significativa de tempo computacional, principalmente em execuções de larga escala.
