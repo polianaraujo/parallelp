@@ -1,4 +1,4 @@
-# Relatório 12 - Afinidade de threads
+# Relatório 12 - Avaliação da Escalabilidade
 Aluna: Poliana Ellen de Araújo
 
 ## 1. Introdução
