@@ -45,7 +45,7 @@ Três tipos de escalonamento foram testados:
 - `dynamic`
 - `guided`
 
-Com três tamanhos de chunk: 1, 4 e 8. O número de threads variou entre 1, 2, 4, 8 e 16. Para garantir consistência nas medições, a inicialização foi feita sem perturbação (campo inicializado com zeros). O tempo de execução foi medido com omp_get_wtime().
+Com três tamanhos de chunk: 1, 4 e 8. O número de threads variou entre 1, 2, 4, 8 e 16. Para garantir consistência nas medições, a inicialização foi feita sem perturbação (campo inicializado com zeros). O tempo de execução foi medido com `omp_get_wtime()`.
 
 - Inclusão da Biblioteca OpenMP:
     - `#include <omp.h>`
