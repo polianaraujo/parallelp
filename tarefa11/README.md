@@ -48,7 +48,7 @@ Três tipos de escalonamento foram testados:
 Com três tamanhos de chunk: 1, 4 e 8. O número de threads variou entre 1, 2, 4, 8 e 16. Para garantir consistência nas medições, a inicialização foi feita sem perturbação (campo inicializado com zeros). O tempo de execução foi medido com omp_get_wtime().
 
 - Inclusão da Biblioteca OpenMP:
-    - #include <omp.h>
+    - `#include <omp.h>`
 - Ajuste da Função `update_field`:
     - A diretiva `#pragma omp parallel for collapse(2)` `schedule(static)` foi adicionada.
         - `parallel for`: Indica que o loop será paralelizado.
