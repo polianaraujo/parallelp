@@ -1,3 +1,13 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <mpi.h>
+
+#define N 1000
+#define STEPS 1000
+#define ALPHA 0.01
+#define LEFT_TEMP 100.0
+#define RIGHT_TEMP 50.0
+
 void exchange_borders_test(double* u, int rank, int size, int local_n) {
     MPI_Request reqs[4];
     int flag[4] = {0, 0, 0, 0};
@@ -46,7 +56,7 @@ int main(int argc, char** argv) {
     int local_n = N / size + 2; // inclui as bordas fantasma
     double* u = calloc(local_n, sizeof(double));
     double* u_new = calloc(local_n, sizeof(double));
-    
+
     double start = MPI_Wtime();
     for (int t = 0; t < STEPS; t++) {
         exchange_borders_test(u, rank, size, local_n);

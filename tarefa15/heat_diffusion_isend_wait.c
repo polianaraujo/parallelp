@@ -1,4 +1,12 @@
-// ... mesmo includes e defines
+#include <stdio.h>
+#include <stdlib.h>
+#include <mpi.h>
+
+#define N 1000
+#define STEPS 1000
+#define ALPHA 0.01
+#define LEFT_TEMP 100.0
+#define RIGHT_TEMP 50.0
 
 void exchange_borders_async(double* u, int rank, int size, int local_n) {
     MPI_Request reqs[4];
