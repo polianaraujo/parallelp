@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --job-name=heat-gpu
+#SBATCH --job-name=heat-gpu-poliana
 #SBATCH --output=slurm-heat.out
 #SBATCH --error=slurm-heat.err
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --gpus=1
 #SBATCH --time=00:10:00
-#SBATCH --partition=gpu
+#SBATCH --partition=gpu-8-v100
 
 # Carrega os módulos necessários
 # module load gcc/12.2.0

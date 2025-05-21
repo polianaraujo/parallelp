@@ -1,0 +1,6 @@
+lto-wrapper: fatal error: problem with building target image for nvptx-none
+
+compilation terminated.
+/usr/bin/ld: error: lto-wrapper failed
+collect2: error: ld returned 1 exit status
+/var/tmp/slurmd.spool/job1442428/slurm_script: line 20: ./heat: No such file or directory
