@@ -8,7 +8,7 @@
 
 # module load mpi/openmpi-x86_64
 
-mpicc matrix_vector_mpi.c -o matrix_vector_mpi -O2
+mpicc matvec_col.c -o matrix_vector_mpi -O2
 
 # Cabeçalho do CSV
 echo "M,N,Num_processos,Tempo_segundos" > resultados.csv
