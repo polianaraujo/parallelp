@@ -118,7 +118,6 @@ int main(int argc, char *argv[]) {
     // Allocate two nxn grids
     double *u     = malloc(sizeof(double)*n*n);
     double *u_tmp = malloc(sizeof(double)*n*n);
-    double *tmp;
 
     // Set the initial value of the grid under the MMS scheme
     initial_value(n, dx, length, u);
