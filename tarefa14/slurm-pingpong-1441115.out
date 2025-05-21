@@ -1,0 +1,31 @@
+--------------------------------------------------------------------------
+WARNING: There is at least one non-excluded one OpenFabrics device found,
+but there are no active ports detected (or Open MPI was unable to use
+them).  This is most certainly not what you wanted.  Check your
+cables, subnet manager configuration, etc.  The openib BTL will be
+ignored for this job.
+
+  Local host: r1i2n16
+--------------------------------------------------------------------------
+Tamanho: 8 bytes, Tempo total: 0.000754 s, Tempo médio: 0.000000377 s
+Tamanho: 16 bytes, Tempo total: 0.000965 s, Tempo médio: 0.000000482 s
+Tamanho: 32 bytes, Tempo total: 0.000905 s, Tempo médio: 0.000000453 s
+Tamanho: 64 bytes, Tempo total: 0.000924 s, Tempo médio: 0.000000462 s
+Tamanho: 128 bytes, Tempo total: 0.001156 s, Tempo médio: 0.000000578 s
+Tamanho: 256 bytes, Tempo total: 0.001126 s, Tempo médio: 0.000000563 s
+Tamanho: 512 bytes, Tempo total: 0.001633 s, Tempo médio: 0.000000817 s
+Tamanho: 1024 bytes, Tempo total: 0.001663 s, Tempo médio: 0.000000831 s
+Tamanho: 2048 bytes, Tempo total: 0.002099 s, Tempo médio: 0.000001050 s
+Tamanho: 4096 bytes, Tempo total: 0.005680 s, Tempo médio: 0.000002840 s
+Tamanho: 8192 bytes, Tempo total: 0.007355 s, Tempo médio: 0.000003677 s
+Tamanho: 16384 bytes, Tempo total: 0.010874 s, Tempo médio: 0.000005437 s
+Tamanho: 32768 bytes, Tempo total: 0.016957 s, Tempo médio: 0.000008478 s
+Tamanho: 65536 bytes, Tempo total: 0.027403 s, Tempo médio: 0.000013701 s
+Tamanho: 131072 bytes, Tempo total: 0.046308 s, Tempo médio: 0.000023154 s
+Tamanho: 262144 bytes, Tempo total: 0.080806 s, Tempo médio: 0.000040403 s
+Tamanho: 524288 bytes, Tempo total: 0.151593 s, Tempo médio: 0.000075797 s
+Tamanho: 1048576 bytes, Tempo total: 0.296754 s, Tempo médio: 0.000148377 s
+
+Resultados salvos em tempo_pingpong.csv
+[r1i2n16.npad.internal:3954037] 1 more process has sent help message help-mpi-btl-openib.txt / no active ports found
+[r1i2n16.npad.internal:3954037] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
