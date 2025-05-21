@@ -1,0 +1,184 @@
+gcc: error: matrix_vector_mpi.c: No such file or directory
+=== Executando M=1000 N=100 com 2 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+2 total processes failed to start
+
+=== Executando M=1000 N=100 com 4 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+4 total processes failed to start
+
+>>> Pulando N=100 com 8 processos (não divisível)
+=== Executando M=1000 N=1000 com 2 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+2 total processes failed to start
+
+=== Executando M=1000 N=1000 com 4 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+4 total processes failed to start
+
+=== Executando M=1000 N=1000 com 8 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+8 total processes failed to start
+
+=== Executando M=10000 N=100 com 2 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+2 total processes failed to start
+
+=== Executando M=10000 N=100 com 4 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+4 total processes failed to start
+
+>>> Pulando N=100 com 8 processos (não divisível)
+=== Executando M=10000 N=1000 com 2 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+2 total processes failed to start
+
+=== Executando M=10000 N=1000 com 4 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+4 total processes failed to start
+
+=== Executando M=10000 N=1000 com 8 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+8 total processes failed to start
+
+=== Executando M=50000 N=100 com 2 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+2 total processes failed to start
+
+=== Executando M=50000 N=100 com 4 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+4 total processes failed to start
+
+>>> Pulando N=100 com 8 processos (não divisível)
+=== Executando M=50000 N=1000 com 2 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+2 total processes failed to start
+
+=== Executando M=50000 N=1000 com 4 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+4 total processes failed to start
+
+=== Executando M=50000 N=1000 com 8 processos ===
+--------------------------------------------------------------------------
+mpirun was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./matrix_vector_mpi
+Node: r1i3n6
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+8 total processes failed to start
+
