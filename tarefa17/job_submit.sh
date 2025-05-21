@@ -2,7 +2,7 @@
 #SBATCH --job-name=matvec-col
 #SBATCH --output=slurm-matvec-col-%j.out
 #SBATCH --time=0-0:20
-#SBATCH --partition=intel-128
+#SBATCH --partition=intel-256
 #SBATCH --ntasks=4
 #SBATCH --cpus-per-task=1
 
