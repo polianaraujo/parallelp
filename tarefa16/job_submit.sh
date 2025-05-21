@@ -2,7 +2,7 @@
 #SBATCH --job-name=matrix-vector-mpi
 #SBATCH --output=slurm-matvec-%j.out
 #SBATCH --time=0-0:30
-#SBATCH --partition=intel-128
+#SBATCH --partition=intel-256
 #SBATCH --ntasks=8
 #SBATCH --cpus-per-task=1
 
