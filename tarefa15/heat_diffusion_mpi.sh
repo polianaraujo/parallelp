@@ -7,12 +7,11 @@
 #SBATCH --nodes=1
 #SBATCH --exclusive
 
-# Compilação (opcional, remova se você já compilou)
-mpicc -O2 heat_mpi_sendrecv.c -o heat_sendrecv
-mpicc -O2 heat_mpi_isend_irecv.c -o heat_isend_irecv
-mpicc -O2 heat_mpi_test.c -o heat_test
+# Corrigindo os nomes dos arquivos-fonte
+mpicc -O2 heat_diffusion_sendrecv.c -o heat_sendrecv
+mpicc -O2 heat_diffusion_isend_wait.c -o heat_isend_irecv
+mpicc -O2 heat_diffusion_overlap.c -o heat_test
 
-# Execução das três versões
 echo "== Iniciando versão com MPI_Send/MPI_Recv =="
 mpirun -np 4 ./heat_sendrecv
 
