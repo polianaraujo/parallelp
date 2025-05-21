@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define N 1000          // Total de pontos na barra
-#define STEPS 1000      // Passos de tempo
+#define N 100000          // Total de pontos na barra
+#define STEPS 10000      // Passos de tempo
 #define ALPHA 0.01f     // Difusividade térmica
 
 void exchange_boundaries(double *u, int local_n, int rank, int size, MPI_Comm comm) {

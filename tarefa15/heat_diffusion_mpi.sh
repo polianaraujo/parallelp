@@ -3,7 +3,10 @@
 #SBATCH --output=slurm-heat-mpi-%j.out
 #SBATCH --time=0-0:20
 #SBATCH --partition=intel-128
+#SBATCH --ntasks=2
 #SBATCH --ntasks=4
+#SBATCH --ntasks=8
+#SBATCH --ntasks=16
 #SBATCH --nodes=1
 #SBATCH --exclusive
 
