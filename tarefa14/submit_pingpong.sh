@@ -8,7 +8,7 @@
 #SBATCH --ntasks=2
 
 # Carrega o módulo MPI, se necessário (ajuste conforme o ambiente do NPAD)
-module load libraries/openmpi/5.0.3-gnu8
+# module load libraries/openmpi/5.0.3-gnu8
 
 # Compila o código (se ainda não estiver compilado)
 mpicc -o pingpong pingpong.c
