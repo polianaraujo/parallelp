@@ -8,14 +8,14 @@
 
 # module load mpi/openmpi-x86_64
 
-mpicc matrix_vector_mpi.c -o matrix_vector_mpi -O2
+mpicc matvec_col.c -o matrix_vector_mpi -O2
 
 # Cabeçalho do CSV
 echo "M,N,Num_processos,Tempo_segundos" > resultados.csv
 
 # Conjuntos maiores de M, N e NP
 for M in 1000 10000 50000 100000; do
-  for N in 100 1000 2000; do
+  for N in 160 320 640 1000 1280 1600 2000; do
     for NP in 2 4 8 16 32; do
       if (( N % NP == 0 )); then
         echo "=== Executando M=$M N=$N com $NP processos ==="
