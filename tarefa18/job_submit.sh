@@ -7,7 +7,7 @@
 #SBATCH --gres=gpu-8-v100
 #SBATCH --time=00:10:00
 
-// module load nvhpc
+# module load nvhpc
 
 nvc -mp=gpu -O3 heat.c -o heat
 
