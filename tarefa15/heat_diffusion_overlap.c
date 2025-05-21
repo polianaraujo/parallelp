@@ -8,7 +8,7 @@
 #define LEFT_TEMP 100.0
 #define RIGHT_TEMP 50.0
 
-void exchange_borders_test(double* u, int rank, int size, int local_n) {
+void exchange_borders_test(double* u, double* u_new, int rank, int size, int local_n) {
     MPI_Request reqs[4];
     int flag[4] = {0, 0, 0, 0};
 
@@ -30,22 +30,26 @@ void exchange_borders_test(double* u, int rank, int size, int local_n) {
         flag[2] = flag[3] = 1;
     }
 
-    // Atualiza pontos internos enquanto aguarda bordas
+    // Computa os pontos internos (que não dependem das bordas)
+    for (int i = 2; i < local_n - 2; i++) {
+        u_new[i] = u[i] + ALPHA * (u[i - 1] - 2 * u[i] + u[i + 1]);
+    }
+
+    // Aguarda a recepção das bordas
     while (!flag[0] || !flag[2]) {
         if (!flag[0]) MPI_Test(&reqs[0], &flag[0], MPI_STATUS_IGNORE);
         if (!flag[2]) MPI_Test(&reqs[2], &flag[2], MPI_STATUS_IGNORE);
-
-        for (int i = 2; i < local_n - 2; i++) // internos seguros
-            u_new[i] = u[i] + ALPHA * (u[i - 1] - 2 * u[i] + u[i + 1]);
     }
 
+    // Aguarda finalização dos envios
     MPI_Wait(&reqs[1], MPI_STATUS_IGNORE);
     MPI_Wait(&reqs[3], MPI_STATUS_IGNORE);
 
-    // Atualiza bordas seguras
+    // Atualiza as bordas internas após receber os dados
     u_new[1] = u[1] + ALPHA * (u[0] - 2 * u[1] + u[2]);
     u_new[local_n - 2] = u[local_n - 2] + ALPHA * (u[local_n - 3] - 2 * u[local_n - 2] + u[local_n - 1]);
 }
+
 
 int main(int argc, char** argv) {
     int rank, size;
