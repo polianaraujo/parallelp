@@ -7,7 +7,6 @@
 #SBATCH --nodes=1
 #SBATCH --exclusive
 
-# Corrigindo os nomes dos arquivos-fonte
 mpicc -O2 heat_diffusion_sendrecv.c -o heat_sendrecv
 mpicc -O2 heat_diffusion_isend_wait.c -o heat_isend_irecv
 mpicc -O2 heat_diffusion_overlap.c -o heat_test
