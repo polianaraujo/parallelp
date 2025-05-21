@@ -57,9 +57,17 @@ int main(int argc, char *argv[]) {
     MPI_Gather(local_y, local_rows, MPI_DOUBLE, y, local_rows, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
     double end = MPI_Wtime();
+    double tempo = end - start;
 
     if (rank == 0) {
-        printf("M=%d N=%d Proc=%d Tempo=%f segundos\n", M, N, size, end - start);
+        FILE *fp = fopen("resultados.csv", "a");
+        if (fp != NULL) {
+            fprintf(fp, "%d,%d,%d,%.6f\n", M, N, size, tempo);
+            fclose(fp);
+        } else {
+            fprintf(stderr, "Erro ao abrir arquivo CSV.\n");
+        }
+
         free(A);
         free(y);
     }

@@ -10,7 +10,9 @@
 
 mpicc matrix_vector_mpi.c -o matrix_vector_mpi -O2
 
-# Testes com diferentes M, N e np
+# Cabeçalho do CSV
+echo "M,N,Num_processos,Tempo_segundos" > resultados.csv
+
 for M in 1000 10000 50000; do
   for N in 100 1000; do
     for NP in 2 4 8 16; do
