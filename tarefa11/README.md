@@ -1,7 +1,7 @@
 # Relatório 11 - Impacto das cláusulas schedule e collapse
 Aluna: Poliana Ellen de Araújo
 
-## 1. Introdução
+## 1. Introdução TESTE
 
 Este relatório apresenta uma simulação do movimento de um fluido ao longo do tempo usando a equação de Navier-Stokes, considerando apenas os efeitos da viscosidade, desconsiderando a pressão e quaisquer forças externas. Utilizando diferenças finitas para discretizar o espaço e simule a evolução da velocidade do fluido no tempo, foi inicialize o fluido parado ou com velocidade constante e verifique se o campo permanece estável, e em seguida inserido uma pequena perturbação. Após validar o código foi paralelizado com OpenMP explorando o impacto das cláusulas schedule e collapse no desempenho da execução paralela.
 Foram realizados dois conjuntos distintos de experimentos:
