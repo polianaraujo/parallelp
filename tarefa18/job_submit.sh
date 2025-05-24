@@ -9,7 +9,6 @@
 
 # module load nvhpc
 
-nvc -mp=gpu -O3 heat.c -o heat
+gcc -fopenmp -O3 heat.c -o heat
 
 ./heat 1000 10
-
