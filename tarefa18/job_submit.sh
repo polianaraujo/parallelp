@@ -2,10 +2,10 @@
 #SBATCH --job-name=heat
 #SBATCH --output=slurm-heat.out
 #SBATCH --error=slurm-heat.err
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=8
-#SBATCH --gres=gpu-8-v100
-#SBATCH --time=00:10:00
+#SBATCH --gpus-per-node=1
+#SBATCH --partition=gpu-4-a100
+#SBATCH --cpus-per-task=6
+#SBATCH --time=0-03:00
 
 # module load nvhpc
 
