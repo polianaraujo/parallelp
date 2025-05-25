@@ -3,10 +3,12 @@ Aluna: Poliana Ellen de Araújo
 
 ## 1. Introdução
 
-Este relatório apresenta uma simulação do movimento de um fluido ao longo do tempo usando a equação de Navier-Stokes, considerando apenas os efeitos da viscosidade, desconsiderando a pressão e quaisquer forças externas. Utilizando diferenças finitas para discretizar o espaço e simule a evolução da velocidade do fluido no tempo, foi inicialize o fluido parado ou com velocidade constante e verifique se o campo permanece estável, e em seguida inserido uma pequena perturbação. Após validar o código foi paralelizado com OpenMP explorando o impacto das cláusulas schedule e collapse no desempenho da execução paralela.
-Foram realizados dois conjuntos distintos de experimentos:
+Este relatório apresenta uma **simulação do movimento de um fluido ao longo do tempo usando a equação de Navier-Stokes**, considerando apenas os efeitos da viscosidade, desconsiderando a pressão e quaisquer forças externas. Utilizando **diferenças finitas para discretizar o espaço e simule a evolução da velocidade do fluido no tempo**. Foi pedido para inicializar o fluido parado ou com velocidade constante e verificar se o campo permanece estável, e em seguida inserido uma pequena perturbação. Após validar, o código foi paralelizado com OpenMP explorando o impacto das cláusulas schedule e collapse no desempenho da execução paralela.
+Portante, foram realizados dois conjuntos distintos de experimentos:
 - Com Perturbação Inicial (versão sequencial): utilizada para visualização do comportamento da simulação ao longo do tempo.
 - Sem Perturbação Inicial (versão paralela): utilizada para testes de desempenho isolados, eliminando efeitos de valores iniciais não-nulos.
+
+\frac{u\power-index{n+1|i,j}-u\power-index{n|i,j}|Δt}=v\frac{u\power-index{n|i+1,j}-u\power-index{n|i-1,j}+u\power-index{n|i,j+1}+u\power-index{n|i,j-1}-4n\power-index{n|i,j}|Δx\power{2}}
 
 ![navier_stokes_diffusion](navier_stokes_diffusion.gif)
 
@@ -15,10 +17,10 @@ Foram realizados dois conjuntos distintos de experimentos:
 
 ### 2.1. Código Sequencial - Equação considerando apenas a viscosidade
 - Definição de Constantes:
-    - `NX` e `NY`: Dimensões da grade.
-    - `NSTEPS`: Número de passos de tempo.
-    - `DT`: Passo de tempo.
-    - `VISCOSITY`: Coeficiente de viscosidade.
+    - `NX` e `NY`: Dimensões da grade, nesse caso `100x100`.
+    - `NSTEPS`: Número de passos de tempo, nesse caso `1000`.
+    - `DT`: Passo de tempo, nesse caso `0,1`.
+    - `VISCOSITY`: Coeficiente de viscosidade, nesse caso `0,1`.
 - Função ``initialize_field``:
     - Inicializa o campo de velocidade com zeros.
     - Introduz uma perturbação no centro da grade.
