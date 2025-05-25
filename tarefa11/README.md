@@ -45,6 +45,7 @@ Onde:
 Paralelizar a simulação utilizando OpenMP para explorar múltiplos threads e melhorar o desempenho. O paralelismo foi aplicado nas seguintes regiões:
 - Cálculo do laplaciano interno da matriz.
 - Cópia da matriz next para current a cada passo temporal.
+O código foi executado **com e sem perturbação**(linha 21 comentada).
 
 Três tipos de escalonamento foram testados:
 - ``static``
@@ -82,6 +83,13 @@ A versão paralela foi executada duas vezes, a primeira com a aplicação de per
 field[NX / 2][NY / 2] = 1.0f;
 ```
 
+## 3. Resultados
+
+|Escalabilidade forte|Escalabilidade fraca|
+|-----|-----|
+|![Escalabilidade forte](https://github.com/polianaraujo/parallelp/blob/main/tarefa12/graficos/escalabilidade_forte.png)|![Escalabilidade fraca](https://github.com/polianaraujo/parallelp/blob/main/tarefa12/graficos/escalabilidade_fraca.png)|
+
+
 Enquanto os dados da execução sem perturbação (transformando a linha acima comentada), foram salvos em um arquivo chamado results_sem_perturbacao.csv.
 
 Em ambos, os dados foram coletados contém:
@@ -92,28 +100,6 @@ Em ambos, os dados foram coletados contém:
 - Valor final no centro da matriz
 - Valor médio de toda a matriz
 
-## 3. Resultados
-
-|Escalabilidade forte|Escalabilidade fraca|
-|-----|-----|
-|![Escalabilidade forte](https://github.com/polianaraujo/parallelp/blob/main/tarefa12/graficos/escalabilidade_forte.png)|![Escalabilidade fraca](https://github.com/polianaraujo/parallelp/blob/main/tarefa12/graficos/escalabilidade_fraca.png)|
-
-### 3.1. Escalabilidade Forte
-Com o tamanho do problema fixo (`N = 128`), podendo observar:
-
-- Com 1 thread, o tempo de execução varios entre ~1.2 e 1.7 segundos, dependendo da política de escalonamento e da cláusula `collaspse`. O melhor tempo foi com `guided` e `caollpase=3`.
-- A redução no tempo de execução foi notável com o aumento de threads até certo ponto. Com 2 e 4 threads, o tempo caiu consideralvemente, alcançando valores em torno de 0.27s e 0.68s.
-- Com 8 threads, houve bons resultados com `guided` e `dynamic`, especialmente para `collapse=1`, com tempos próximos a 0.28s.
-- A partir de 16 threads, observou-se uma diminuição nos ganhos de desempenho. Em alguns casos, como `collapse=3`, o tempo voltou a aumentar.
-- Com `128` threads, o desempenho piorou, com tempos que se aproximaram novamente de 1.4-1.7s, sugerindo overhead de paralelização.
-
-### 3.2. Escalabilidade Fraca
-
-O tamanho do problema cresce proporcionalmente ao número de threads.
-- Com 1 thread e `N=50`, o tempo foi cerca de 0.27s para todas as políticas e valores de `collapse`, exceto `dynamic`, que apresentou valores próximos a 0.79s.
-- Com 2 threads (`N=100`), os tempos aumentaram para ~`1.56s` para `static` e `guided`, e ultrapassaram 5s com `dynamic`, mostrando um desempenho ruim com esse política.
-- Com 4 threads (`N=200`), `static` e `guided` mantiveram tempos ao redor de 13s, enquanto `dynamic` foi significativamente maior, chegando a 42s.
-- Com 8 threads (`N=400`), os tempos com `static` subiram para mais de `100s`, enquanto `dynamic` atingiu pucos acima de 340s, evidenciando grande ineficiência.
 
 ## 4. Conclusões
 
