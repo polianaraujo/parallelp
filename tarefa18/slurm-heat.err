@@ -1,0 +1,8 @@
++ echo 'Iniciando job SLURM (CPU)...'
++ echo 'Compilando o código...'
++ gcc -fopenmp -O3 -o heat heat.c -lm
++ echo 'Listando arquivos após compilação:'
++ ls -lh
++ '[' '!' -f heat ']'
++ echo 'Executando o programa...'
++ ./heat 1000 500

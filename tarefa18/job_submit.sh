@@ -2,7 +2,7 @@
 #SBATCH --job-name=heat_poliana_cpu
 #SBATCH --output=slurm-heat.out
 #SBATCH --error=slurm-heat.err
-#SBATCH --partition=cpu-small
+#SBATCH --partition=intel-128
 #SBATCH --time=0-00:10
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
@@ -11,8 +11,8 @@ set -x
 
 echo "Iniciando job SLURM (CPU)..."
 
-module purge
-module load gcc/12.2.0
+#module purge
+#module load gcc/12.2.0
 
 echo "Compilando o código..."
 gcc -fopenmp -O3 -o heat heat.c -lm
