@@ -9,7 +9,10 @@ Portante, foram realizados dois conjuntos distintos de experimentos:
 - Sem Perturbação Inicial (versão paralela): utilizada para testes de desempenho isolados, eliminando efeitos de valores iniciais não-nulos.
 
 $$
-\frac{u\power-index{n+1|i,j}-u\power-index{n|i,j}|Δt}=v\frac{u\power-index{n|i+1,j}-u\power-index{n|i-1,j}+u\power-index{n|i,j+1}+u\power-index{n|i,j-1}-4n\power-index{n|i,j}|Δx\power{2}}
+
+\frac{1}{x}
+% \frac{u\power-index{n+1|i,j}-u\power-index{n|i,j}|Δt}=v\frac{u\power-index{n|i+1,j}-u\power-index{n|i-1,j}+u\power-index{n|i,j+1}+u\power-index{n|i,j-1}-4n\power-index{n|i,j}|Δx\power{2}}
+
 $$
 
 ![navier_stokes_diffusion](navier_stokes_diffusion.gif)
