@@ -85,12 +85,6 @@ field[NX / 2][NY / 2] = 1.0f;
 
 ## 3. Resultados
 
-|Sem perturbação|Com perturbação|
-|-----|-----|
-|![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_sem_perturb/combined_analysis_sem_perturb.png)|![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_w_perturb/combined_analysis_w_perturb.png)|
-|![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_sem_perturb/time_per_chunk_sem_perturb.png)|![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_w_perturb/time_per_chunk_w_perturb.png)|
-
-
 Enquanto os dados da execução sem perturbação (transformando a linha acima comentada), foram salvos em um arquivo chamado results_sem_perturbacao.csv.
 
 Em ambos, os dados foram coletados contém:
@@ -100,6 +94,59 @@ Em ambos, os dados foram coletados contém:
 - Tempo total de execução
 - Valor final no centro da matriz
 - Valor médio de toda a matriz
+
+|Sem perturbação|Com perturbação|
+|-----|-----|
+|![combined_analysis_sem_perturb](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_sem_perturb/combined_analysis_sem_perturb.png)|![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_w_perturb/combined_analysis_w_perturb.png)|
+|![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_sem_perturb/time_per_chunk_sem_perturb.png)|![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_w_perturb/time_per_chunk_w_perturb.png)|
+
+### 3.1 Sem perturbação
+
+🔹 `combined_analysis_sem_perturb`: Threads × Schedule × Tempo
+Este gráfico compara os tempos de execução em função da quantidade de threads e do tipo de escalonamento utilizado (static, dynamic, guided). De modo geral, observam-se as seguintes tendências:
+
+Melhor desempenho (menor tempo) é obtido com o escalonamento guided, especialmente quando o número de threads aumenta até 8. Para 2, 4 e 8 threads, guided apresenta tempos significativamente menores que os demais tipos.
+
+O escalonamento dynamic apresenta maior variabilidade, e em alguns casos (como com 4 e 8 threads), resulta em tempos superiores aos outros métodos.
+
+Com 16 threads, todos os tipos de escalonamento apresentam um aumento abrupto no tempo de execução, provavelmente devido à sobrecarga de paralelismo e/ou limitação de recursos computacionais. Isso sugere ineficiência na utilização de muitos threads para esse problema específico.
+
+O tempo de execução diminui gradualmente com o aumento do número de threads até 8, e volta a crescer com 16 threads, indicando um ponto ótimo próximo de 4 a 8 threads, dependendo do escalonamento.
+
+🔹 `time_per_chunk_sem_perturb`: Chunk Size × Tempo
+Neste gráfico, analisamos o tempo de execução em relação ao tamanho do chunk (1, 4, 8) para cada combinação de threads e tipo de escalonamento.
+
+Para a maioria dos casos, um tamanho de chunk menor (1) resulta em maior tempo de execução, especialmente com escalonamento dynamic. Isso se deve ao overhead de agendamento muito frequente.
+
+Com o aumento do tamanho do chunk (4 e 8), o tempo tende a reduzir até certo ponto, pois o agendamento ocorre com menos frequência.
+
+No escalonamento guided, os tempos são consistentemente baixos independentemente do chunk size, o que demonstra a eficiência adaptativa deste tipo de escalonamento.
+
+No escalonamento static, a diferença entre tamanhos de chunk é pequena, o que é esperado, visto que a divisão de trabalho é definida previamente e não muda durante a execução.
+
+### 3.2 Com perturbação
+
+🔹 `combined_analysis_com_perturb`: Threads x Schedule x Tempo
+Este gráfico permite comparar o tempo de execução para diferentes combinações de número de threads e estratégias de escalonamento (static, dynamic e guided) com chunk sizes variados, em um cenário com perturbações.
+
+Observa-se que, para até 8 threads, o tempo de execução tende a reduzir com o aumento do número de threads, especialmente nos agendamentos guided e static.
+
+Para 16 threads, todos os escalonamentos apresentam um tempo de execução mais alto e relativamente estável, indicando possível overhead de paralelismo em excesso ou contenção de recursos, comum em sistemas com muitos threads competindo simultaneamente.
+
+O agendamento guided mostrou o melhor desempenho geral para 4 e 8 threads, mantendo tempos de execução baixos e consistentes.
+
+O escalonamento dynamic teve desempenho inferior para 1 e 2 threads, mas se aproximou do desempenho dos outros à medida que as threads aumentaram.
+
+Em todos os agendamentos, o chunk size afeta pouco o desempenho para guided, mas causa maior variação nos modos static e dynamic.
+
+🔹 `time_per_chunk_com_perturb`: Tempo por Chunk Size
+Este gráfico mostra o tempo médio de execução por chunk size (1, 4 e 8), agrupando todos os valores de threads e escalonamentos.
+
+Observa-se uma tendência de queda no tempo médio de execução com o aumento do chunk size. Isso é esperado, pois maiores chunk sizes reduzem a sobrecarga de agendamento.
+
+Chunk size 1 apresenta o maior tempo médio, pois exige agendamento mais frequente e granular, sendo mais sensível às perturbações.
+
+Chunk sizes 4 e 8 são mais eficientes e robustos à perturbação, especialmente no modo static.
 
 
 ## 4. Conclusões
