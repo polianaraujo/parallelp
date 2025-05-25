@@ -1,13 +1,19 @@
 # Relatório 11 - Impacto das cláusulas schedule e collapse
 Aluna: Poliana Ellen de Araújo
 
+
 ## 1. Introdução
 
-Este relatório apresenta uma **simulação do movimento de um fluido ao longo do tempo usando a equação de Navier-Stokes**, considerando apenas os efeitos da viscosidade, desconsiderando a pressão e quaisquer forças externas. Utilizando **diferenças finitas para discretizar o espaço e simule a evolução da velocidade do fluido no tempo**. Foi pedido para inicializar o fluido parado ou com velocidade constante e verificar se o campo permanece estável, e em seguida inserido uma pequena perturbação. Após validar, o código foi paralelizado com OpenMP explorando o impacto das cláusulas schedule e collapse no desempenho da execução paralela.
-Portante, foram realizados dois conjuntos distintos de experimentos:
-- Com Perturbação Inicial (versão sequencial): utilizada para visualização do comportamento da simulação ao longo do tempo.
-- Sem Perturbação Inicial (versão paralela): utilizada para testes de desempenho isolados, eliminando efeitos de valores iniciais não-nulos.
+Este relatório apresenta uma **simulação da equação de Navier-Stokes** considerando apenas a viscosidade, sem pressão ou forças externas. A simulação utiliza **diferenças finitas** para discretizar o espaço e acompanhar a evolução da velocidade do fluido ao longo do tempo.
 
+Inicialmente, o fluido foi configurado em repouso ou com velocidade constante, seguido da introdução de uma pequena perturbação para observar a estabilidade do campo.
+
+Após a validação, o código foi **paralelizado com OpenMP**, avaliando o impacto das cláusulas `schedule` e `collapse` no desempenho.
+
+Foram realizados dois conjuntos de experimentos:
+
+* **Com perturbação (versão sequencial):** para análise visual do comportamento da simulação.
+* **Sem perturbação (versão paralela):** para testes de desempenho, sem interferência de valores iniciais não-nulos.
 
 A equação da viscosidade (sem pressão e forças externas) em duas dimensões é dada por:
 
@@ -42,36 +48,46 @@ Onde:
 - Função ``main``:
     - Inicializa o campo, executa a simulação calculando o tempo através da função `gettimeofday()`.
 
+
 ### 2.2. Código Paralelo - Com OpenMP
 
-Paralelizar a simulação utilizando OpenMP para explorar múltiplos threads e melhorar o desempenho. O paralelismo foi aplicado nas seguintes regiões:
-- Cálculo do laplaciano interno da matriz.
-- Cópia da matriz next para current a cada passo temporal.
-O código foi executado **com e sem perturbação**(linha 21 comentada).
+A simulação foi paralelizada com OpenMP para explorar múltiplos threads e melhorar o desempenho. As regiões paralelizadas foram:
 
-Três tipos de escalonamento foram testados:
-- ``static``
-- `dynamic`
-- `guided`
+* Cálculo do laplaciano interno da matriz.
+* Cópia da matriz `next` para `current` a cada passo de tempo.
 
-Com três tamanhos de chunk: 1, 4 e 8. O número de threads variou entre 1, 2, 4, 8 e 16. Para garantir consistência nas medições, a inicialização foi feita sem perturbação (campo inicializado com zeros). O tempo de execução foi medido com `omp_get_wtime()`.
+O código foi executado **com e sem perturbação** (linha 21 comentada).
 
-- Inclusão da Biblioteca OpenMP:
-    - `#include <omp.h>`
-- Ajuste da Função `update_field`:
-    - A diretiva `#pragma omp parallel for collapse(2)` `schedule(static)` foi adicionada.
-        - `parallel for`: Indica que o loop será paralelizado.
-        - `collapse(2)`: Unifica os dois loops aninhados (i e j) em um único loop virtual, permitindo um balanceamento mais eficiente da carga de trabalho.
-        - `schedule(static)`: Divide o loop em blocos iguais e atribui cada bloco a um thread (`dynamic` e `guided` são outras opções, que ajustam a divisão dinamicamente ou de forma guiada).
+Foram testadas:
 
-Para avaliar o impacto da paralelização no desempenho da simulação, foi implementado no código a função `run_simulation`, que permite executar a simulação com diferentes configurações:
-- Variação do número de threads (1, 2, 4, 8, 16), com o intuito de investigar o efeito do grau de paralelismo.
-- Diferentes tipos de escalonamento (`static`, `dynamic`, `guided`), servindo para determinar como as interações do loop paralelo são distruibuídas entre as threads
-- Diferentes tamanhos de chunk (1, 4, 8), definindo a granularidade das tarefas atribuídas a cada thread.
+* Estratégias de escalonamento: `static`, `dynamic` e `guided`.
+* Tamanhos de chunk: 1, 4 e 8.
+* Números de threads: 1, 2, 4, 8 e 16.
+
+A inicialização foi feita com o campo zerado para garantir consistência. O tempo de execução foi medido com `omp_get_wtime()`.
+
+**Modificações no código:**
+
+* Inclusão de `#include <omp.h>`.
+* Na função `update_field`, foi usada a diretiva:
+
+  ```c
+  #pragma omp parallel for collapse(2) schedule(static)
+  ```
+
+  * `parallel for`: paraleliza o loop.
+  * `collapse(2)`: unifica os loops `i` e `j`.
+  * `schedule(...)`: define a estratégia de distribuição (também testadas `dynamic` e `guided`).
+
+A função `run_simulation` permite executar a simulação variando:
+
+* Número de threads.
+* Tipo de escalonamento.
+* Tamanho do chunk.
+
+Essas variações foram usadas para analisar o impacto da paralelização no desempenho.
 
 ### 2.3. Execução
-
-A execução foi realizada com os seguintes comandos, para o sequencial e o paralelo, respectivamente:
 
 ```
 gcc -o sequential sequential.c -lm
@@ -80,86 +96,46 @@ gcc -o parallel parallel.c -fopenmp -lm
 ./parallel
 ```
 
-A versão paralela foi executada duas vezes, a primeira com a aplicação de perturbação, através da linha 21 abaixo, e o resultado foi salvo em um arquivo csv chamado results_w_perturbacao.csv:
-```
-field[NX / 2][NY / 2] = 1.0f;
-```
-
 ## 3. Resultados
 
 Enquanto os dados da execução sem perturbação (transformando a linha acima comentada), foram salvos em um arquivo chamado results_sem_perturbacao.csv.
-
-Em ambos, os dados foram coletados contém:
-- Número de threads utilizadas
-- Tipo de escalonamento
-- Tamanho do chunk
-- Tempo total de execução
-- Valor final no centro da matriz
-- Valor médio de toda a matriz
 
 |Sem perturbação|Com perturbação|
 |-----|-----|
 |![combined_analysis_sem_perturb](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_sem_perturb/combined_analysis_sem_perturb.png)|![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_w_perturb/combined_analysis_w_perturb.png)|
 |![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_sem_perturb/time_per_chunk_sem_perturb.png)|![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_w_perturb/time_per_chunk_w_perturb.png)|
 
-### 3.1. Sem perturbação
+### 🔹 3.1. Sem perturbação
 
-🔹 `combined_analysis_sem_perturb`: Threads × Schedule × Tempo
+- O escalonamento guided apresentou o melhor desempenho geral, principalmente com 2, 4 e 8 threads.
 
-Este gráfico compara os tempos de execução em função da quantidade de threads e do tipo de escalonamento utilizado (static, dynamic, guided). De modo geral, observam-se as seguintes tendências:
+- O dynamic mostrou maior variabilidade e, em alguns casos, pior desempenho.
 
-Melhor desempenho (menor tempo) é obtido com o escalonamento guided, especialmente quando o número de threads aumenta até 8. Para 2, 4 e 8 threads, guided apresenta tempos significativamente menores que os demais tipos.
+- Com 16 threads, todos os agendamentos apresentaram piora no tempo de execução, indicando excesso de paralelismo.
 
-O escalonamento dynamic apresenta maior variabilidade, e em alguns casos (como com 4 e 8 threads), resulta em tempos superiores aos outros métodos.
+- O tempo de execução diminui com o aumento de threads até 8, sendo esse o ponto ótimo.
 
-Com 16 threads, todos os tipos de escalonamento apresentam um aumento abrupto no tempo de execução, provavelmente devido à sobrecarga de paralelismo e/ou limitação de recursos computacionais. Isso sugere ineficiência na utilização de muitos threads para esse problema específico.
+- Chunk size menor (1) gera maior tempo, devido ao overhead de agendamento.
 
-O tempo de execução diminui gradualmente com o aumento do número de threads até 8, e volta a crescer com 16 threads, indicando um ponto ótimo próximo de 4 a 8 threads, dependendo do escalonamento.
+- Chunk sizes 4 e 8 são mais eficientes, especialmente com escalonamento guided.
 
-🔹 `time_per_chunk_sem_perturb`: Chunk Size × Tempo
+- No modo static, a variação com o chunk size é pequena.
 
-Neste gráfico, analisamos o tempo de execução em relação ao tamanho do chunk (1, 4, 8) para cada combinação de threads e tipo de escalonamento.
+### 🔹 3.2. Com perturbação
 
-Para a maioria dos casos, um tamanho de chunk menor (1) resulta em maior tempo de execução, especialmente com escalonamento dynamic. Isso se deve ao overhead de agendamento muito frequente.
+- O comportamento geral se mantém semelhante ao caso sem perturbação, com o guided se destacando em eficiência.
 
-Com o aumento do tamanho do chunk (4 e 8), o tempo tende a reduzir até certo ponto, pois o agendamento ocorre com menos frequência.
+- O uso de 16 threads continua sendo ineficiente por conta da sobrecarga.
 
-No escalonamento guided, os tempos são consistentemente baixos independentemente do chunk size, o que demonstra a eficiência adaptativa deste tipo de escalonamento.
+- O chunk size 1 é mais afetado por perturbações, resultando em maior tempo de execução.
 
-No escalonamento static, a diferença entre tamanhos de chunk é pequena, o que é esperado, visto que a divisão de trabalho é definida previamente e não muda durante a execução.
-
-### 3.2. Com perturbação
-
-🔹 `combined_analysis_com_perturb`: Threads x Schedule x Tempo
-
-Este gráfico permite comparar o tempo de execução para diferentes combinações de número de threads e estratégias de escalonamento (static, dynamic e guided) com chunk sizes variados, em um cenário com perturbações.
-
-Observa-se que, para até 8 threads, o tempo de execução tende a reduzir com o aumento do número de threads, especialmente nos agendamentos guided e static.
-
-Para 16 threads, todos os escalonamentos apresentam um tempo de execução mais alto e relativamente estável, indicando possível overhead de paralelismo em excesso ou contenção de recursos, comum em sistemas com muitos threads competindo simultaneamente.
-
-O agendamento guided mostrou o melhor desempenho geral para 4 e 8 threads, mantendo tempos de execução baixos e consistentes.
-
-O escalonamento dynamic teve desempenho inferior para 1 e 2 threads, mas se aproximou do desempenho dos outros à medida que as threads aumentaram.
-
-Em todos os agendamentos, o chunk size afeta pouco o desempenho para guided, mas causa maior variação nos modos static e dynamic.
-
-🔹 `time_per_chunk_com_perturb`: Tempo por Chunk Size
-
-Este gráfico mostra o tempo médio de execução por chunk size (1, 4 e 8), agrupando todos os valores de threads e escalonamentos.
-
-Observa-se uma tendência de queda no tempo médio de execução com o aumento do chunk size. Isso é esperado, pois maiores chunk sizes reduzem a sobrecarga de agendamento.
-
-Chunk size 1 apresenta o maior tempo médio, pois exige agendamento mais frequente e granular, sendo mais sensível às perturbações.
-
-Chunk sizes 4 e 8 são mais eficientes e robustos à perturbação, especialmente no modo static.
-
+- Chunk sizes 4 e 8 seguem mais robustos, principalmente no escalonamento static.
 
 ## 4. Conclusões
 
-- A política de escalonamento `guided` apresentou os melhores resultados de tempo para escalabilidade forte, especialmente com baixo número de threads (1 a 4).
-- A política `dynamic` não é adequada para escalabilidade fraca, pois demonstrou altos tempos de execução e baixa eficiência, especialmente com maiores quantidades de threads.
-- A melhor performance global foi alcançada com até 4 threads, sendo que, a partir disso, o overhead de gerenciamento de threads parece superar o ganhos de paralelismo.
-- A cláusula `collapse` teve impacto variável, mas em geral, valores mais baixos (`collapse=1`) apresentaram melhor desempenho em cenários com muitas threads.
-- A análise sugere que o uso de paralelismo deve ser balanceado com o tamanho da carga de trabalho, evitando o uso excessivo de threads em problemas pequenos.
-- O desempenho ótimo depende da combinação entre política de escalonamento, número de threads e estrutura de laços (`collapse`). Para cargas maiores, a política `static` ou `guided` com ajustes adequados pode ser a mais indicada.
+* O escalonamento `guided` teve o melhor desempenho, especialmente com até 4 threads.
+* `Dynamic` mostrou baixa eficiência em cenários com muitas threads, sendo pouco indicado para escalabilidade fraca.
+* O melhor desempenho geral foi com até 4 threads; acima disso, o overhead compromete os ganhos.
+* A cláusula `collapse=1` foi, em geral, mais eficiente com muitas threads.
+* O paralelismo deve ser ajustado ao tamanho da carga: muitos threads em problemas pequenos reduzem a eficiência.
+* A escolha ideal combina política de escalonamento, número de threads e uso de `collapse`, sendo `static` ou `guided` mais indicados para cargas maiores.
