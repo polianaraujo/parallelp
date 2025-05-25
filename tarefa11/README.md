@@ -38,9 +38,7 @@ Onde:
 - Função ``print_field``:
     - Imprime o campo em formato simplificado para monitoramento.
 - Função ``main``:
-    - Inicializa o campo, executa a simulação calculando o tempo através da função `gettimeofday()` e exibe os resultados na Figura 1.
-
-Portanto
+    - Inicializa o campo, executa a simulação calculando o tempo através da função `gettimeofday()`.
 
 ### 2.2. Código Paralelo - Com OpenMP
 
