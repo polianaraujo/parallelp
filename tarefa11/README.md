@@ -9,7 +9,12 @@ Portante, foram realizados dois conjuntos distintos de experimentos:
 - Sem Perturbação Inicial (versão paralela): utilizada para testes de desempenho isolados, eliminando efeitos de valores iniciais não-nulos.
 
 
- em linha: $ \frac{𝜕u|𝜕t}=v𝛻\power{2}u $
+A equação da viscosidade (sem pressão e forças externas) em duas dimensões é dada por:
+$$ \frac{𝜕u}{𝜕t}=v𝛻^{2}u $$
+Onde:
+- $u$: Campo de velocidade do fluido
+- $v$: Coeficiente de viscosidade
+- $𝛻^{2}$: Operador Laplaciano
 
 ![navier_stokes_diffusion](navier_stokes_diffusion.gif)
 
@@ -26,16 +31,16 @@ Portante, foram realizados dois conjuntos distintos de experimentos:
     - Inicializa o campo de velocidade com zeros.
     - Introduz uma perturbação no centro da grade.
 - Função ``update_field``:
-    - Calcula a próxima iteração do campo usando a fórmula discreta da equação de Navier-Stokes.
+    - Calcula a próxima iteração do campo (como ele se comporta com o tempo) usando a fórmula discreta da equação de Navier-Stokes.
 - Função ``simulate``:
-    - Realiza a simulação iterativa.
-    - Em cada iteração, a função update_field é chamada para atualizar o campo.
+    - Realiza a simulação iterativa, em `NSTEPS`.
+    - Em cada iteração, a função update_field é chamada para atualizar o campo (simulação de como a velocidade do fluido, em cada ponto da malha, muda ao longo do tempo, considerando apenas os efeitos da difusão viscosa).
 - Função ``print_field``:
     - Imprime o campo em formato simplificado para monitoramento.
 - Função ``main``:
-    - Inicializa o campo, executa a simulação e exibe os resultados.
+    - Inicializa o campo, executa a simulação calculando o tempo através da função `gettimeofday()` e exibe os resultados na Figura 1.
 
-A implementação sequencial foi feita em linguagem C, utilizando funções padrão de manipulação de arrays. O tempo de execução é medido com gettimeofday(). O campo simulado é inicializado com uma perturbação central unitária (valor 1.0), e a matriz é atualizada iterativamente.
+Portanto
 
 ### 2.2. Código Paralelo - Com OpenMP
 
