@@ -1,10 +1,9 @@
 #!/bin/bash
-#SBATCH --job-name=test_gpu
-#SBATCH --output=slurm-test-gpu.out
-#SBATCH --error=slurm-test-gpu.err
-#SBATCH --partition=gpu-8-v100
-#SBATCH --gpus-per-node=1
-#SBATCH --time=0-00:05
+#SBATCH --job-name=test_simple
+#SBATCH --output=teste_simple.out
+#SBATCH --error=teste_simple.err
+#SBATCH --time=0-03:00
 
-echo "Testando GPU com nvidia-smi"
+echo "Testando SLURM no NPAD - GPU partition"
 nvidia-smi
+
