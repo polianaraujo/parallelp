@@ -85,9 +85,10 @@ field[NX / 2][NY / 2] = 1.0f;
 
 ## 3. Resultados
 
-|Escalabilidade forte|Escalabilidade fraca|
+|Sem perturbação|Com perturbação|
 |-----|-----|
-|![Escalabilidade forte](https://github.com/polianaraujo/parallelp/blob/main/tarefa12/graficos/escalabilidade_forte.png)|![Escalabilidade fraca](https://github.com/polianaraujo/parallelp/blob/main/tarefa12/graficos/escalabilidade_fraca.png)|
+|![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_sem_perturb/combined_analysis_sem_perturb.png)|![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_w_perturb/combined_analysis_w_perturb.png)|
+|![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_sem_perturb/time_per_chunk_sem_perturb.png)|![Combinação](https://github.com/polianaraujo/parallelp/blob/main/tarefa11/plots_w_perturb/time_per_chunk_w_perturb.png)|
 
 
 Enquanto os dados da execução sem perturbação (transformando a linha acima comentada), foram salvos em um arquivo chamado results_sem_perturbacao.csv.
