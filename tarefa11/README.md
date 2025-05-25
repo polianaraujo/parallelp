@@ -10,7 +10,9 @@ Portante, foram realizados dois conjuntos distintos de experimentos:
 
 
 A equação da viscosidade (sem pressão e forças externas) em duas dimensões é dada por:
+
 $$ \frac{𝜕u}{𝜕t}=v𝛻^{2}u $$
+
 Onde:
 - $u$: Campo de velocidade do fluido
 - $v$: Coeficiente de viscosidade
