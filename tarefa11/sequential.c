@@ -19,6 +19,8 @@ void initialize_field(float field[NX][NY]) {
     field[NX / 2][NY / 2] = 1.0f; // Perturbação inicial no centro
 }
 
+// Simula como o campo se comporta com o tempo
+// Discretização explícita da equação de difusão
 void update_field(float current[NX][NY], float next[NX][NY]) {
     for (int i = 1; i < NX - 1; i++) {
         for (int j = 1; j < NY - 1; j++) {
@@ -29,6 +31,7 @@ void update_field(float current[NX][NY], float next[NX][NY]) {
         }
     }
 }
+
 
 void simulate(float field[NX][NY]) {
     float next_field[NX][NY];
