@@ -8,6 +8,10 @@
 echo "[INFO] Compilando main_forte.c..."
 gcc -O3 -fopenmp main_forte.c -o main_forte
 
+# Limpar o CSV antes de escrever
+> $CSV
+echo "n_threads,schedule,collapse,N,tempo" > $CSV
+
 # Criar arquivo de saída
 CSV="resultados_forte.csv"
 echo "n_threads,schedule,collapse,N,tempo" > $CSV
