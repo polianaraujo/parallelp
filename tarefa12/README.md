@@ -28,13 +28,13 @@ Com o tamanho do problema fixo (`N = 128`), podendo observar:
 
 - Para collapse = 1 e 2:
 
- - O tempo reduz significativamente ao passar de 1 para 2 threads (~17% de redução).
+    - O tempo reduz significativamente ao passar de 1 para 2 threads (~17% de redução).
 
- - Porém, de 2 para 4 e 8 threads, o ganho de desempenho é praticamente nulo ou até ligeiramente piora.
+    - Porém, de 2 para 4 e 8 threads, o ganho de desempenho é praticamente nulo ou até ligeiramente piora.
 
 - Para collapse = 3:
 
- - O tempo aumenta drasticamente (ex: ~0.54s com 1 thread vs. ~0.51s com 8 threads) — ou seja, muito pior desempenho, mesmo com mais threads.
+    - O tempo aumenta drasticamente (ex: ~0.54s com 1 thread vs. ~0.51s com 8 threads) — ou seja, muito pior desempenho, mesmo com mais threads.
 
 ### 3.2. Escalabilidade Fraca
 
