@@ -9,7 +9,7 @@ Este trabalho tem como objetivo avaliar a escalabilidade de um código baseado n
 
 O código utilizado resolve numericamente as equações de Navier-Stokes bidimensionais, aplicando o método das diferenças finitas. A paralelização foi feita utilizando a API OpenMP, explorando o paralelismo em laços onde operações independentes são realizadas sobre elementos da malha de solução.
 
-Os arquivos principais estão no diretório raiz, e são o main_forte.c é main_fraca.c, cuja versão atual estão focadas na análise de escalabilidade forte e fraca, a primeira mantendo o número NX e NY ao passo de diferentes quantidades de threads, e o último aumentando proporcionalmente o tamanho do problema com o número de threads.
+Os arquivos principais estão no diretório raiz, e são o main_forte.c e main_fraca.c, focadas na análise de escalabilidade forte e fraca, a primeira mantendo o número NX e NY ao passo de diferentes quantidades de threads, e o último aumentando proporcionalmente o tamanho do problema com o número de threads.
 
 Para submeter no NPAD:
 ```
