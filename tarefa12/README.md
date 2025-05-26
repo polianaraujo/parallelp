@@ -21,7 +21,7 @@ sbatch shell_forte.sh
 
 |Escalabilidade forte|Escalabilidade fraca|
 |-----|-----|
-|![Escalabilidade forte](https://github.com/polianaraujo/parallelp/blob/main/tarefa12/graficos/escalabilidade_forte.png)|![Escalabilidade fraca](https://github.com/polianaraujo/parallelp/blob/main/tarefa12/graficos/escalabilidade_fraca.png)|
+|![Escalabilidade forte](https://github.com/polianaraujo/parallelp/blob/main/tarefa12/graficos/escalabilidade_forte_8.png)|![Escalabilidade fraca](https://github.com/polianaraujo/parallelp/blob/main/tarefa12/graficos/escalabilidade_fraca.png)|
 
 ### 3.1. Escalabilidade Forte
 Com o tamanho do problema fixo (`N = 128`), podendo observar:
