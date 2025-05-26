@@ -25,40 +25,6 @@ Os experimentos foram realizados no ambiente do NPAD, executando um código para
 - O número de threads (1, 2, 4, 8, 16, 32)
 - A política de afinidade de threads (`false`, `true`, `close`, `spread`, `master`)
 
-```
-[pedarajo@service0 tarefa13]$ cat results_20250518_160541.csv
-threads,affinity,time
-1,false,0.958370
-1,true,0.933981
-1,close,0.973994
-1,spread,0.917426
-1,master,0.918329
-2,false,0.538263
-2,true,0.522186
-2,close,0.503780
-2,spread,0.550748
-2,master,0.849626
-4,false,0.347166
-4,true,0.324282
-4,close,0.348438
-4,spread,0.323327
-4,master,1.180983
-8,false,0.240428
-8,true,0.234981
-8,close,0.241779
-8,spread,0.237994
-8,master,1.784695
-16,false,0.180741
-16,true,0.168707
-16,close,0.169054
-16,spread,0.178430
-16,master,2.973133
-32,false,0.147721
-32,true,0.142729
-32,close,0.145915
-32,spread,0.144840
-32,master,5.435383
-```
 
 |Comparação das afinidades de todas as threads|Tempo vs threads por afinidade|
 |-----|-----|
