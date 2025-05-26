@@ -26,11 +26,15 @@ sbatch shell_forte.sh
 ### 3.1. Escalabilidade Forte
 Com o tamanho do problema fixo (`N = 128`), podendo observar:
 
-- Com 1 thread, o tempo de execução varios entre ~1.2 e 1.7 segundos, dependendo da política de escalonamento e da cláusula `collaspse`. O melhor tempo foi com `guided` e `caollpase=3`.
-- A redução no tempo de execução foi notável com o aumento de threads até certo ponto. Com 2 e 4 threads, o tempo caiu consideralvemente, alcançando valores em torno de 0.27s e 0.68s.
-- Com 8 threads, houve bons resultados com `guided` e `dynamic`, especialmente para `collapse=1`, com tempos próximos a 0.28s.
-- A partir de 16 threads, observou-se uma diminuição nos ganhos de desempenho. Em alguns casos, como `collapse=3`, o tempo voltou a aumentar.
-- Com `128` threads, o desempenho piorou, com tempos que se aproximaram novamente de 1.4-1.7s, sugerindo overhead de paralelização.
+- Para collapse = 1 e 2:
+
+ - O tempo reduz significativamente ao passar de 1 para 2 threads (~17% de redução).
+
+ - Porém, de 2 para 4 e 8 threads, o ganho de desempenho é praticamente nulo ou até ligeiramente piora.
+
+- Para collapse = 3:
+
+ - O tempo aumenta drasticamente (ex: ~0.54s com 1 thread vs. ~0.51s com 8 threads) — ou seja, muito pior desempenho, mesmo com mais threads.
 
 ### 3.2. Escalabilidade Fraca
 
