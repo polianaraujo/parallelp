@@ -39,5 +39,5 @@ def plot_tempo(df, titulo, nome_arquivo):
     plt.show()
 
 # Gerar e salvar gráficos
-plot_tempo(df_forte, "Escalabilidade Forte: Tempo vs Threads", "escalabilidade_forte.png")
+plot_tempo(df_forte, "Escalabilidade Forte: Tempo vs Threads", "escalabilidade_forte_8.png")
 plot_tempo(df_fraca, "Escalabilidade Fraca: Tempo vs Threads", "escalabilidade_fraca.png")
