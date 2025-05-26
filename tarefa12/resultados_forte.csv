@@ -25,3 +25,13 @@ n_threads,schedule,collapse,N,tempo
 4,guided,2,128,0.174012
 4,static,3,128,0.508551
 4,dynamic,3,128,0.508783
+4,guided,3,128,0.509423
+8,static,1,128,0.174344
+8,dynamic,1,128,0.173026
+8,guided,1,128,0.174547
+8,static,2,128,0.177454
+8,dynamic,2,128,0.178802
+8,guided,2,128,0.177231
+8,static,3,128,0.508454
+8,dynamic,3,128,0.510725
+8,guided,3,128,0.510995
