@@ -3,6 +3,7 @@ Aluna: Poliana Ellen de Araújo
 
 ## 1. Introdução
 
+Este trabalho tem como objetivo comparar o desempenho de diferentes abordagens de paralelização para a simulação da equação de calor unidimensional utilizando a biblioteca MPI (Message Passing Interface). Foram implementadas três versões do código, variando o modelo de comunicação entre processos: comunicação bloqueante (MPI_Send/MPI_Recv), comunicação não bloqueante com sincronização (MPI_Isend/MPI_Irecv + MPI_Wait) e comunicação não bloqueante com verificação de sobreposição (MPI_Test). A análise dos tempos de execução permite avaliar a eficiência de cada abordagem em um ambiente de computação de alto desempenho.
 
 ## 2. Metodologia
 
