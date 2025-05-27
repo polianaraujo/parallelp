@@ -2,10 +2,23 @@
 Aluna: Poliana Ellen de Araújo
 
 ## 1. Introdução
+- Objetivo do Programa
+    - Dois processos se comunicam entre si trocando uma mensagem de ida e volta (ping-pong).
+
+    - Vários tamanhos de mensagem são testados (de 8 bytes a 1 MB).
+
+    - Múltiplas iterações (1000 por tamanho) são usadas para obter uma média confiável.
+
+    - O tempo é medido com MPI_Wtime() e armazenado em um CSV para análise gráfica posterior.
+
 
 
 ## 2. Metodologia
 
+Garantir que o há exatamente 2 processos sendo executados. Se haver mais ou menos, quer dizer que:
+- Pode haver comunicação mal direcionada.
+- Pode causar **deadlock**.
+- Ou simplesmente gerar resultados incorretos.
 
 
 ## 3. Resultados
