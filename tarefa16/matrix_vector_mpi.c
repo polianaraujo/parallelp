@@ -5,10 +5,12 @@
 int main(int argc, char *argv[]) {
     int rank, size, M, N;
 
+    // Inicializa MPI
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
+    // Leitura de argumentos
     if (argc != 3) {
         if (rank == 0)
             printf("Uso: %s <M> <N>\n", argv[0]);
@@ -44,9 +46,15 @@ int main(int argc, char *argv[]) {
 
     double start = MPI_Wtime();
 
+    // Distribuição dos dados
+
+    // Divide as linhas da matriz A igualmente entre os processos
     MPI_Scatter(A, local_rows * N, MPI_DOUBLE, local_A, local_rows * N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    
+    // Envia o vetor x completo a todos os processos
     MPI_Bcast(x, N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
+    // Cálculo local de y
     for (int i = 0; i < local_rows; i++) {
         local_y[i] = 0.0;
         for (int j = 0; j < N; j++) {
@@ -54,11 +62,14 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    // Reunião dos resultados
     MPI_Gather(local_y, local_rows, MPI_DOUBLE, y, local_rows, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
     double end = MPI_Wtime();
     double tempo = end - start;
 
+    // Escrita no csv
+    // Apenas o processo 0 grava os dados de tempo no csv
     if (rank == 0) {
         FILE *fp = fopen("resultados.csv", "a");
         if (fp != NULL) {
