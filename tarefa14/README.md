@@ -12,7 +12,7 @@ Este experimento avalia a latência de comunicação entre dois processos MPI po
 
 - A verificação de quantidade de processos é essencial para:
 
-    - Evitar comunicação incorreta ou deadlocks.
+    - Evitar comunicação incorreta ou **deadlocks**.
 
     - Garantir resultados consistentes.
 
