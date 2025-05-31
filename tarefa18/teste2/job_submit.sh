@@ -37,7 +37,7 @@ echo "---------------------------------------------------------------"
 # --- Compilação e Execução de heat_target_map.c (com target data e map) ---
 echo "Compilando heat_target_map.c (com target data e map)..."
 # Usamos nvc para compilar, garantindo suporte completo a OpenMP Offloading para NVIDIA GPUs
-nvc heat_target_map.c -o heat_target_map -mp=gpu -lm
+nvc heat_target_map.c -o heat_target_map -mp=gpu -gpu=cc80 -lm
 
 if [ -f heat_target_map ]; then
     echo "Executando heat_target_map com N=${N_SIZE}, NSTEPS=${N_STEPS}..."
@@ -49,7 +49,7 @@ echo "---------------------------------------------------------------"
 
 # --- Compilação e Execução de heat_target_map_opt.c (com target data, map e otimização de laço) ---
 echo "Compilando heat_target_map_opt.c (com target data, map e otimização de laço)..."
-nvc heat_target_map_opt.c -o heat_target_map_opt -mp=gpu -lm
+nvc heat_target_map_opt.c -o heat_target_map_opt -mp=gpu -gpu=cc80 -lm
 
 if [ -f heat_target_map_opt ]; then
     echo "Executando heat_target_map_opt com N=${N_SIZE}, NSTEPS=${N_STEPS}..."
