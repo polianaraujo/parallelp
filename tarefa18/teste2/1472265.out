@@ -1,0 +1,78 @@
+Iniciando compilação e execução dos códigos HEAT OpenMP com GPU...
+---------------------------------------------------------------
+Compilando heat.c (versão original)...
+Executando heat_original com N=8000, NSTEPS=10...
+
+ MMS heat equation
+
+--------------------
+Problem input
+
+ Grid size: 8000 x 8000
+ Cell width: 1.249844E-01
+ Grid length: 1000.000000 x 1000.000000
+
+ Alpha: 1.000000E-01
+
+ Steps: 10
+ Total time: 5.000000E-01
+ Time step: 5.000000E-02
+--------------------
+Stability
+
+ r value: 0.320080
+--------------------
+Results
+
+Error (L2norm): 1.499275E-10
+Solve time (s): 5.926727
+Total time (s): 10.085276
+--------------------
+---------------------------------------------------------------
+Compilando heat_target_map.c (com target data e map)...
+Executando heat_target_map com N=8000, NSTEPS=10...
+
+ MMS heat equation
+
+--------------------
+Problem input
+
+ Grid size: 8000 x 8000
+ Cell width: 1.249844E-01
+ Grid length: 1000.000000 x 1000.000000
+
+ Alpha: 1.000000E-01
+
+ Steps: 10
+ Total time: 5.000000E-01
+ Time step: 5.000000E-02
+--------------------
+Stability
+
+ r value: 0.320080
+--------------------
+---------------------------------------------------------------
+Compilando heat_target_map_opt.c (com target data, map e otimização de laço)...
+Executando heat_target_map_opt com N=8000, NSTEPS=10...
+
+ MMS heat equation
+
+--------------------
+Problem input
+
+ Grid size: 8000 x 8000
+ Cell width: 1.249844E-01
+ Grid length: 1000.000000 x 1000.000000
+
+ Alpha: 1.000000E-01
+
+ Steps: 10
+ Total time: 5.000000E-01
+ Time step: 5.000000E-02
+--------------------
+Stability
+
+ r value: 0.320080
+--------------------
+---------------------------------------------------------------
+Processo concluído.

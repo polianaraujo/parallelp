@@ -1,0 +1,6 @@
+Failing in Thread:0
+Accelerator Fatal Error: call to cuInit returned error 3 (CUDA_ERROR_NOT_INITIALIZED): Not initialized
+
+Failing in Thread:0
+Accelerator Fatal Error: call to cuInit returned error 3 (CUDA_ERROR_NOT_INITIALIZED): Not initialized
+
