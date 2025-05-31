@@ -9,13 +9,13 @@
 #SBATCH --time=2
 #SBATCH --qos=preempt
 
-# module load compilers/gnu
-# module load compilers/nvidia/cuda
-# module load libraries/cuda
-module load compilers/nvidia/nvhpc
+module load compilers/gnu
+module load compilers/nvidia/cuda   # ESSENCIAL
+module load libraries/cuda          # ESSENCIAL
+module load compilers/nvidia/nvhpc  # ESSENCIAL para o nvc e ferramentas
 
-# Compilação com suporte OpenMP target
-nvc -mp=gpu -fast -o heat heat.c
+# Compilação (certifique-se que o nome do arquivo-fonte está correto: heat.c)
+nvc -mp=gpu -fast -Minfo=all -o heat heat.c
 
 # Execução
 ./heat 1000 10
