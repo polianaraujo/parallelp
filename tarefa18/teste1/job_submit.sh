@@ -10,11 +10,18 @@
 #SBATCH --qos=preempt
 
 module load compilers/gnu
-module load compilers/nvidia/cuda   # ESSENCIAL
-module load libraries/cuda          # ESSENCIAL
-module load compilers/nvidia/nvhpc  # ESSENCIAL para o nvc e ferramentas
+module load compilers/nvidia/cuda
+module load libraries/cuda
+module load compilers/nvidia/nvhpc
 
-# Compilação (certifique-se que o nome do arquivo-fonte está correto: heat.c)
+echo "--- Ambiente CUDA ---"
+env | grep -i CUDA
+env | grep -i NVIDIA
+echo "LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
+echo "PATH: $PATH"
+echo "--- Fim Ambiente CUDA ---"
+
+# Compilação
 nvc -mp=gpu -fast -Minfo=all -o heat heat.c
 
 # Execução
