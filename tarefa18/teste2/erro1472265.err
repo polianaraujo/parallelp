@@ -1,8 +1,0 @@
-nvc-Error-A CUDA toolkit matching the current driver version (0) or a supported older version (11.8) was not installed with this HPC SDK.
-Failing in Thread:0
-Accelerator Fatal Error: call to cuInit returned error 3 (CUDA_ERROR_NOT_INITIALIZED): Not initialized
-
-nvc-Error-A CUDA toolkit matching the current driver version (0) or a supported older version (11.8) was not installed with this HPC SDK.
-Failing in Thread:0
-Accelerator Fatal Error: call to cuInit returned error 3 (CUDA_ERROR_NOT_INITIALIZED): Not initialized
-
