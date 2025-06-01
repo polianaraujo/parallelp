@@ -2,7 +2,7 @@
 Aluna: Poliana Ellen de Araújo
 
 ## 1. Introdução
-
+$\text{local\_y}_i = \sum_{j \in \text{colunas\_locais}} A_{ij} \cdot x_j$
 
 ## 2. Metodologia
 
