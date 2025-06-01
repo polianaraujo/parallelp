@@ -1,4 +1,0 @@
-/var/tmp/slurmd.spool/job1472242/slurm_script: line 18: nvc: command not found
-Failing in Thread:0
-Accelerator Fatal Error: call to cuInit returned error 3 (CUDA_ERROR_NOT_INITIALIZED): Not initialized
-

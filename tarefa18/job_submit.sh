@@ -2,7 +2,7 @@
 #SBATCH --job-name=OMP_heat
 #SBATCH --output=%j.out
 #SBATCH --error=erro%j.err
-#SBATCH --partition=gpu-8-h100
+#SBATCH --partition=gpu-4-a100
 #SBATCH --gpus-per-node=1
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks-per-node=1
