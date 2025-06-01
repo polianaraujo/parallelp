@@ -3,12 +3,20 @@
 #include <mpi.h>
 
 int main(int argc, char *argv[]) {
-    int rank, size, M, N;
+    int rank, size, M, N; // rank: ID do processo; size: número total de processos; M, N: dimensões da matriz
 
+    // Inicializa o ambiente MPI.
     MPI_Init(&argc, &argv);
+
+    // Rank do processo atual dentro do comunicador MPI_COMM_WORLD.
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    // Obtém o número total de processos no comunicador MPI_COMM_WORLD.
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
+    // Validação de argumentos e divisibilidade
+
+    // Verifica se o número de argumentos está correto (nome do programa + M + N)
     if (argc != 3) {
         if (rank == 0)
             printf("Uso: %s <M> <N>\n", argv[0]);
@@ -19,13 +27,15 @@ int main(int argc, char *argv[]) {
     M = atoi(argv[1]);
     N = atoi(argv[2]);
 
+    // Garante que o número de colunas (N) é divisível pelo número de processos (size), para distribuição uniforme de colunas
     if (N % size != 0) {
-        if (rank == 0)
+        if (rank == 0)  // // Apenas o processo mestre imprime a mensagem de uso
             printf("Erro: N (%d) deve ser divisível pelo número de processos (%d).\n", N, size);
         MPI_Finalize();
         return -1;
     }
 
+    // Número de colunas que cada processo irá manipular
     int local_cols = N / size;
 
     double *A = NULL;
@@ -80,6 +90,7 @@ int main(int argc, char *argv[]) {
     double end = MPI_Wtime();
     double tempo = end - start;
 
+    // GRavação de resultados e limpeza
     if (rank == 0) {
         FILE *fp = fopen("resultados.csv", "a");
         if (fp != NULL) {
