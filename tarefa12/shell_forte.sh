@@ -10,13 +10,16 @@ gcc -O3 -fopenmp main_forte.c -o main_forte
 
 # Criar arquivo de saída
 CSV="resultados_forte.csv"
+
+# Limpar o CSV antes de escrever
+> $CSV
 echo "n_threads,schedule,collapse,N,tempo" > $CSV
 
 # Parâmetro do problema (fixo para escalabilidade forte)
 N=128
 
 # Testar escalabilidade forte com diferentes parâmetros
-for threads in 1 2 4 8 16 32 64 128; do
+for threads in 1 2 4 8; do
     for collapse in 1 2 3; do
         for schedule in static dynamic guided; do
             echo "[INFO] Executando com $threads threads | schedule=$schedule | collapse=$collapse"
