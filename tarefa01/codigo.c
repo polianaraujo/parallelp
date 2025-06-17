@@ -4,26 +4,26 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-// Função para multiplicar uma matriz (m x n) por um vetor de tamanho n
-// Percorre a matriz linha por linha
-void mat_vec_row_major(double *matrix, double *vector, double *result, int m, int n) {
-    for (int i = 0; i < m; i++) {
-        result[i] = 0.0; // Inicializa o resultado da linha
-        for (int j = 0; j < n; j++) {
-            result[i] += matrix[i * n + j] * vector[j];
+// Função para multiplicar uma matriz (N x N) por um vetor de tamanho N
+// Percorre a matriz linha por linha (acesso sequencial e eficiente)
+void mat_vec_row_major(double *matrix, double *vector, double *result, int N) {
+    for (int i = 0; i < N; i++) {
+        result[i] = 0.0;
+        for (int j = 0; j < N; j++) {
+            result[i] += matrix[i * N + j] * vector[j];
         }
     }
 }
 
-// Função para multiplicar uma matriz (m x n) por um vetor de tamanho n
-// Percorre a matriz coluna por coluna
-void mat_vec_col_major(double *matrix, double *vector, double *result, int m, int n) {
-    for (int i = 0; i < m; i++) {
-        result[i] = 0.0; // Inicializa o vetor resultado
+// Função para multiplicar uma matriz (N x N) por um vetor de tamanho N
+// Percorre a matriz coluna por coluna (acesso não sequencial e ineficiente)
+void mat_vec_col_major(double *matrix, double *vector, double *result, int N) {
+    for (int i = 0; i < N; i++) {
+        result[i] = 0.0;
     }
-    for (int j = 0; j < n; j++) {
-        for (int i = 0; i < m; i++) {
-            result[i] += matrix[i + j * m] * vector[j];
+    for (int j = 0; j < N; j++) {
+        for (int i = 0; i < N; i++) {
+            result[i] += matrix[i * N + j] * vector[j];
         }
     }
 }
@@ -36,53 +36,58 @@ long getTimeInMicroseconds() {
 }
 
 int main() {
-    // Definição dos tamanhos de matrizes a serem testadas
-    int sizes[][2] = {
-        {128, 256}, 
-        {512, 1024}, 
-        {1024, 2048}, 
-        {2048, 4096},
-        {4096, 8192},
-        {8192, 16384}
-    };
-    int num_sizes = sizeof(sizes) / sizeof(sizes[0]); // Quantidade de tamanhos a testar
+    // Abre o arquivo CSV para escrita
+    FILE *csv_file = fopen("resultados.csv", "w");
+    if (csv_file == NULL) {
+        printf("Erro ao abrir o arquivo resultados.csv\n");
+        return 1;
+    }
+
+    // Escreve o cabeçalho do CSV
+    fprintf(csv_file, "Tamanho_N,Tempo_Linha_us,Tempo_Coluna_us\n");
+
+    int sizes[] = {32, 64, 128, 256, 512, 1024};
+    int num_sizes = sizeof(sizes) / sizeof(sizes[0]);
 
     for (int s = 0; s < num_sizes; s++) {
-        int m = sizes[s][0];  // Número de linhas da matriz
-        int n = sizes[s][1];  // Número de colunas da matriz
-        printf("Tamanho da matriz: %d x %d\n", m, n);
+        int N = sizes[s];
+        printf("Processando matriz: %d x %d...\n", N, N);
 
-        // Aloca memória para matriz, vetor e vetor resultado
-        double *matrix = (double *) malloc(m * n * sizeof(double));
-        double *vector = (double *) malloc(n * sizeof(double));  // Vetor de entrada
-        double *result = (double *) malloc(m * sizeof(double));  // Vetor resultado
+        double *matrix = (double *) malloc(N * N * sizeof(double));
+        double *vector = (double *) malloc(N * sizeof(double));
+        double *result = (double *) malloc(N * sizeof(double));
 
-        // Inicializa a matriz e o vetor com valores aleatórios
-        for (int i = 0; i < m * n; i++) {
+        for (int i = 0; i < N * N; i++) {
             matrix[i] = rand() / (double) RAND_MAX;
         }
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < N; i++) {
             vector[i] = rand() / (double) RAND_MAX;
         }
 
-        long start, end;
+        long start_row, end_row, time_row;
+        long start_col, end_col, time_col;
 
-        // Mede o tempo da multiplicacao linha por linha
-        start = getTimeInMicroseconds();
-        mat_vec_row_major(matrix, vector, result, m, n);
-        end = getTimeInMicroseconds();
-        printf("Linha por linha: %ld microssegundos\n", end - start);
+        start_row = getTimeInMicroseconds();
+        mat_vec_row_major(matrix, vector, result, N);
+        end_row = getTimeInMicroseconds();
+        time_row = end_row - start_row;
 
-        // Mede o tempo da multiplicacao coluna por coluna
-        start = getTimeInMicroseconds();
-        mat_vec_col_major(matrix, vector, result, m, n);
-        end = getTimeInMicroseconds();
-        printf("Coluna por coluna: %ld microssegundos\n", end - start);
+        start_col = getTimeInMicroseconds();
+        mat_vec_col_major(matrix, vector, result, N);
+        end_col = getTimeInMicroseconds();
+        time_col = end_col - start_col;
 
-        // Libera a memória alocada
+        // Escreve os resultados da iteração atual no arquivo CSV
+        fprintf(csv_file, "%d,%ld,%ld\n", N, time_row, time_col);
+
         free(matrix);
         free(vector);
         free(result);
     }
+
+    // Fecha o arquivo
+    fclose(csv_file);
+    printf("Resultados salvos em resultados.csv\n");
+
     return 0;
 }
