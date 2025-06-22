@@ -36,15 +36,5 @@ Para obter o máximo desempenho, a melhor abordagem é combinar as duas estraté
 Para compilar e executar o projeto:
 
 ```bash
-# Requer o compilador GCC
-
-# Compilar com diferentes níveis de otimização
-gcc -O0 -o ilp_test_o0 main.c
-gcc -O2 -o ilp_test_o2 main.c
-gcc -O3 -o ilp_test_o3 main.c
-
-# Executar e ver os tempos de execução
-./ilp_test_o0
-./ilp_test_o2
-./ilp_test_o3
+./run.sh
 ```
