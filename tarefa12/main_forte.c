@@ -3,6 +3,7 @@
 #include <string.h>
 #include <omp.h>
 
+// Alocando dinamicamente uma matriz tridimensional de números de ponto flutuante de tamanho N x N x N
 float ***alloc_3d(int N) {
     float ***array = malloc(N * sizeof(float **));
     for (int i = 0; i < N; i++) {
@@ -14,30 +15,34 @@ float ***alloc_3d(int N) {
     return array;
 }
 
+// Libera a memória alocada
 void free_3d(float ***array, int N) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            free(array[i][j]);
+            free(array[i][j]);  // Libera cada linha 1D
         }
-        free(array[i]);
+        free(array[i]);     // Libera cada linha 2D
     }
-    free(array);
+    free(array);    // Libera o ponteiro principal
 }
 
+// Condição inicial para a simulação
 void initialize(float ***u, int N) {
-    int cx = N / 2, cy = N / 2, cz = N / 2;
-    u[cx][cy][cz] = 1.0f;
+    int cx = N / 2, cy = N / 2, cz = N / 2; // Coordenadas do ponto central da grade.
+    u[cx][cy][cz] = 1.0f;   // Valor central da matriz u como 1
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 4) {
+    if (argc != 4) {    // Se o número de elementos da linha de comando for diferente de 4, erro
         printf("Uso: %s <schedule: static|dynamic|guided> <collapse: 1|2|3> <N>\n", argv[0]);
         return 1;
     }
 
-    char *schedule = argv[1];
-    int collapse_level = atoi(argv[2]);
-    int N = atoi(argv[3]);
+    char *schedule = argv[1];           // Primeiro argumento: tipo de escalonamento OpenMP (embora não usado nos pragmas)
+    int collapse_level = atoi(argv[2]); // Segundo argumento: nível de colapso dos loops
+    int N = atoi(argv[3]);              // Terceiro argumento: dimensão da grade (N x N x N)
+
+    // inicialização da simulação
     int NSTEPS = 100;
     float DT = 0.01f, DX = 1.0f, VISC = 0.1f;
 

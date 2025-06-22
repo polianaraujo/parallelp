@@ -1,0 +1,10 @@
+Optimization,Function,ExecutionTime_s
+O0,initialize_array,1.505788
+O0,sum_sequential,0.863824
+O0,sum_parallelized,0.338799
+O2,initialize_array,0.602871
+O2,sum_sequential,0.158944
+O2,sum_parallelized,0.093442
+O3,initialize_array,0.543531
+O3,sum_sequential,0.146503
+O3,sum_parallelized,0.098264

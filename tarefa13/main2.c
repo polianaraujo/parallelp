@@ -9,12 +9,13 @@
 #define DX 1.0f
 #define VISC 0.1f
 
+// Array de velocidade e da velocidade no próximo passo
 float u[N][N][N], u_new[N][N][N];
 
 void initialize() {
-    memset(u, 0, sizeof(u));
-    int cx = N / 2, cy = N / 2, cz = N / 2;
-    u[cx][cy][cz] = 1.0f;
+    memset(u, 0, sizeof(u));    // Inicia array com zeros e calcula seu tamanho (em bytes)
+    int cx = N / 2, cy = N / 2, cz = N / 2; // Coordenadas do centro da grade
+    u[cx][cy][cz] = 1.0f;   // Ponto central inicial de 1
 }
 
 void simulate() {

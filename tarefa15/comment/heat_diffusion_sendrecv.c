@@ -8,8 +8,10 @@
 #define ALPHA 0.01f     // Difusividade térmica
 
 void exchange_boundaries(double *u, int local_n, int rank, int size, MPI_Comm comm) {
+    // Se o processo não for o de rank 0, ele envia o valor do seu primeiro ponto real (u[1]) para o processo vizinho à esquerda (rank - 1).
     if (rank > 0)
         MPI_Send(&u[1], 1, MPI_DOUBLE, rank - 1, 0, comm);
+    // se o processo não for o último, ele envia o valor do seu último ponto real (u[local_n]) para o processo vizinho à direita (rank+1)
     if (rank < size - 1)
         MPI_Send(&u[local_n], 1, MPI_DOUBLE, rank + 1, 1, comm);
 
@@ -17,6 +19,9 @@ void exchange_boundaries(double *u, int local_n, int rank, int size, MPI_Comm co
         MPI_Recv(&u[local_n + 1], 1, MPI_DOUBLE, rank + 1, 0, comm, MPI_STATUS_IGNORE);
     if (rank > 0)
         MPI_Recv(&u[0], 1, MPI_DOUBLE, rank - 1, 1, comm, MPI_STATUS_IGNORE);
+
+    // Quando um trabalhador faz um MPI_Send, ele pode precisar esperar um pouco até que a mensagem seja entregue ou copiada para um local seguro.
+    // Quando um trabalhador faz um MPI_Recv, ele não faz mais nada até que a mensagem que ele está esperando chegue. Ele fica "bloqueado", esperando.
 }
 
 int main(int argc, char **argv) {
