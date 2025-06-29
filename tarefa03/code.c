@@ -1,47 +1,68 @@
-/*
-Implemente um programa em C que calcule uma aproximação de ∏ usando uma série matemática, variando o número de iterações e medindo o tempo de execução. Compare os valores obtidos com o valor real de π e analise como a acurácia melhora com mais processamento. Reflita sobre como esse comportamento se repete em aplicações reais que demandam resultados cada vez mais precisos, como simulações físicas e inteligência artificial.
-*/
-
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
-#include <sys/time.h>
+#include <sys/time.h> // Para gettimeofday()
 
-// Função para calcular pi usando a série de Leibniz
+// Função para calcular a aproximação de Pi usando a série de Leibniz
 double calcular_pi(long long int iteracoes) {
-    double pi = 0.0;
-    for (long long int k = 0; k < iteracoes; k++) {
-        double termo = (k % 2 == 0 ? 1.0 : -1.0) / (2.0 * k + 1.0);
-        pi += termo;
+    double pi_aproximado = 0.0;
+    int sinal = 1;
+    for (long long int i = 0; i < iteracoes; i++) {
+        pi_aproximado += sinal * (4.0 / (2.0 * i + 1.0));
+        sinal *= -1;
     }
-    return 4.0 * pi;
-}
-
-// Função para calcular tempo decorrido em segundos
-double tempo_decorrido(struct timeval inicio, struct timeval fim) {
-    return (fim.tv_sec - inicio.tv_sec) + (fim.tv_usec - inicio.tv_usec) / 1e6;
+    return pi_aproximado;
 }
 
 int main() {
-    long long int passos[] = {1000, 10000, 100000, 1000000, 10000000};
-    int tamanho = sizeof(passos) / sizeof(passos[0]);
-    double pi_real = M_PI;
+    // Array com diferentes números de iterações para testar
+    long long int iteracoes[] = {100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
+    int num_niveis = sizeof(iteracoes) / sizeof(iteracoes[0]);
 
-    printf("--------------------------------------------------------------------------\n");
-    printf("Iterações\tπ calculado\t\tErro Absoluto\t\tTempo (s)\n");
-    printf("--------------------------------------------------------------------------\n");
+    // Ponteiro para o arquivo
+    FILE *arquivo_csv;
 
-    for (int i = 0; i < tamanho; i++) {
+    // Abre (ou cria) o arquivo "resultados_pi.csv" em modo de escrita ("w")
+    arquivo_csv = fopen("resultados_pi.csv", "w");
+
+    // Verifica se o arquivo foi aberto com sucesso
+    if (arquivo_csv == NULL) {
+        printf("Erro ao abrir o arquivo CSV!\n");
+        return 1; // Retorna um código de erro
+    }
+
+    printf("Calculando aproximações de Pi e gerando arquivo CSV...\n");
+
+    // Escreve o cabeçalho no arquivo CSV
+    fprintf(arquivo_csv, "Iteracoes,Pi_Calculado,Diferenca,Tempo_s\n");
+
+    for (int i = 0; i < num_niveis; i++) {
         struct timeval inicio, fim;
 
-        gettimeofday(&inicio, NULL);  // Captura o tempo antes do cálculo
-        double pi_aprox = calcular_pi(passos[i]);
-        gettimeofday(&fim, NULL);  // Captura o tempo depois do cálculo
+        // Marca o tempo de início
+        gettimeofday(&inicio, NULL);
 
-        double tempo_exec = tempo_decorrido(inicio, fim);
-        double erro = fabs(pi_real - pi_aprox);
+        double pi_calculado = calcular_pi(iteracoes[i]);
 
-        printf("%lld\t\t%.15f\t%.15f\t%.6f\n", passos[i], pi_aprox, erro, tempo_exec);
+        // Marca o tempo de fim
+        gettimeofday(&fim, NULL);
+
+        // Calcula o tempo gasto em segundos
+        double tempo_gasto = (fim.tv_sec - inicio.tv_sec) + (fim.tv_usec - inicio.tv_usec) / 1000000.0;
+        
+        double diferenca = fabs(M_PI - pi_calculado);
+
+        // Imprime os resultados no console para acompanhamento
+        printf("Iterações: %-15lld | Tempo: %-10.6f s\n", iteracoes[i], tempo_gasto);
+
+        // Escreve uma linha de dados no arquivo CSV
+        fprintf(arquivo_csv, "%lld,%.15f,%.15f,%.6f\n", iteracoes[i], pi_calculado, diferenca, tempo_gasto);
     }
+
+    // Fecha o arquivo para salvar as alterações
+    fclose(arquivo_csv);
+
+    printf("\nArquivo 'resultados_pi.csv' gerado com sucesso!\n");
 
     return 0;
 }
