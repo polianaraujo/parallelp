@@ -50,7 +50,7 @@ def criar_grafico():
     ax3.plot(iteracoes, aproximacao, marker='o', linestyle='-', color='r')
     ax3.set_xscale('log')
     # ax3.set_yscale('log')
-    ax3.set_title('Tempo de Execução vs. Número de Iterações')
+    ax3.set_title('Valor Aproximado vs. Número de Iterações')
     ax3.set_xlabel('Número de Iterações (escala logarítmica)')
     ax3.set_ylabel('Valor de PI Aproximado')
     ax3.grid(True, which="both", ls="--")
