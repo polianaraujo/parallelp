@@ -11,6 +11,7 @@
 ![Gráfico do tempo de execução por otimização](https://github.com/polianaraujo/parallelp/blob/main/tarefa03/analise_pi_calculo.png)
 
 |Iteracoes|Pi_Calculado|Diferenca|Tempo_s|
+|---------|------------|---------|-------|
 |100|3.131592903558554|0.009999750031239|0.000001|
 |1000|3.140592653839794|0.000999999749999|0.000005|
 |10000|3.141492653590034|0.000099999999759|0.000051|
